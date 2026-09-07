@@ -22,7 +22,6 @@
         }
     </script>
     <style>
-        /* Efek tambahan untuk memperhalus tampilan */
         body { background-color: #f8fafc; }
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
@@ -39,7 +38,6 @@
 </head>
 <body class="font-sans antialiased text-slate-800 selection:bg-emerald-200 selection:text-emerald-900 pb-12">
 
-    <!-- Hero Header Bergradasi dengan lengkungan di bawah -->
     <header class="bg-gradient-to-r from-emerald-600 to-teal-500 text-white pt-12 pb-24 px-4 rounded-b-[2rem] shadow-lg">
         <div class="container mx-auto text-center max-w-3xl">
             <h1 class="text-3xl md:text-4xl font-bold mb-2 tracking-tight">Kas & Donasi Maulid</h1>
@@ -47,7 +45,6 @@
         </div>
     </header>
 
-    <!-- Main Content (Ditarik ke atas agar menimpa header sedikit) -->
     <main class="container mx-auto px-4 max-w-3xl -mt-16 relative z-10">
         
         <!-- Card Saldo -->
@@ -71,20 +68,29 @@
             </div>
         </div>
 
-        <!-- Card QRIS -->
+        <!-- Card QRIS & Tombol WA -->
         <div class="glass-card rounded-3xl p-8 mb-6 text-center">
             <h2 class="text-xl font-bold text-slate-800 mb-2"><i class="fa-solid fa-qrcode text-teal-500 mr-2"></i>Transfer via QRIS</h2>
             <p class="text-sm text-slate-500 mb-6">Scan kode QR ini menggunakan M-Banking atau E-Wallet (Dana, GoPay, OVO, ShopeePay).</p>
             
             <div class="flex justify-center mb-6">
                 <div class="p-2 bg-white rounded-2xl shadow-md border border-slate-100">
-                    <!-- GANTI URL GAMBAR DI BAWAH INI DENGAN GAMBAR QRIS ANDA YANG ASLI -->
-                    <img src="qris.PNG" alt="QRIS Pembayaran" class="rounded-xl max-w-full h-auto w-56 md:w-64">
+                    <!-- GANTI NAMA FILE GAMBAR DI BAWAH INI SESUAI GAMBAR QRIS ANDA -->
+                    <img src="qris.jpg" alt="QRIS Pembayaran" class="rounded-xl max-w-full h-auto w-56 md:w-64">
                 </div>
             </div>
             
-            <div class="inline-block bg-rose-50 text-rose-600 px-4 py-2 rounded-lg text-xs font-medium border border-rose-100">
-                <i class="fa-solid fa-circle-exclamation mr-1"></i> Setelah transfer, harap kirim screenshot bukti ke Bendahara.
+            <div class="inline-block bg-rose-50 text-rose-600 px-4 py-2 rounded-lg text-xs font-medium border border-rose-100 mb-6 block w-fit mx-auto">
+                <i class="fa-solid fa-circle-exclamation mr-1"></i> Jangan lupa simpan screenshot bukti transfer Anda.
+            </div>
+
+            <!-- Tombol Konfirmasi WA -->
+            <div class="mt-2 border-t border-slate-100 pt-6">
+                <!-- GANTI 6281234567890 DENGAN NOMOR WA ANDA. PASTIKAN AWALAN 62, BUKAN 0 -->
+                <a href="https://wa.me/6281234567890?text=Assalamualaikum%20Bendahara,%20saya%20ingin%20konfirmasi%20transfer%20untuk%20Kas/Donasi%20Maulid.%20Berikut%20saya%20lampirkan%20bukti%20transfernya." target="_blank" class="inline-flex items-center justify-center w-full sm:w-max mx-auto bg-[#25D366] hover:bg-[#128C7E] text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1">
+                    <i class="fa-brands fa-whatsapp text-xl mr-2"></i>
+                    Konfirmasi Transfer di Sini
+                </a>
             </div>
         </div>
 
