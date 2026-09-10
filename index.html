@@ -21,52 +21,97 @@
             }
         }
     </script>
-    <style>
-        body { background-color: #f8fafc; }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05);
-        }
-        .gradient-text {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    </style>
-</head>
-<body class="font-sans antialiased text-slate-800 selection:bg-emerald-200 selection:text-emerald-900 pb-12">
+    <script>
+        const sheetId = '16bc8UiTpSYewlUsYszIOoGadHWztTsdN6ERtLey7Htw';
+        const endpoint = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+        const targetPerOrang = 500000;
+        const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
 
-    <header class="bg-gradient-to-r from-emerald-600 to-teal-500 text-white pt-12 pb-24 px-4 rounded-b-[2rem] shadow-lg">
-        <div class="container mx-auto text-center max-w-3xl">
-            <h1 class="text-3xl md:text-4xl font-bold mb-2 tracking-tight">Kas & Donasi Maulid</h1>
-            <p class="text-emerald-50 text-sm md:text-base font-light opacity-90"><i class="fa-solid fa-mosque mr-2"></i>Transparan, Mudah, dan Membawa Berkah</p>
-        </div>
-    </header>
+        fetch(endpoint)
+            .then(res => res.text())
+            .then(text => {
+                const jsonStr = text.substring(47).slice(0, -2);
+                const data = JSON.parse(jsonStr);
+                const rows = data.table.rows;
+                
+                const tbody = document.getElementById('tabelAnggota');
+                const listTerbaru = document.getElementById('listTerbaru');
+                tbody.innerHTML = ''; 
+                listTerbaru.innerHTML = '';
+                
+                let totalTerkumpul = 0;
+                let nomorUrut = 1;
+                let riwayatTransfer = []; // Array untuk menampung yang sudah transfer
 
-    <main class="container mx-auto px-4 max-w-3xl -mt-16 relative z-10">
-        
-        <!-- Card Saldo -->
-        <div class="glass-card rounded-3xl p-8 mb-6 text-center transform transition duration-500 hover:scale-[1.02]">
-            <div class="inline-flex items-center justify-center w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full mb-4">
-                <i class="fa-solid fa-wallet text-xl"></i>
-            </div>
-            <h2 class="text-slate-500 font-medium mb-1 text-sm uppercase tracking-wider">Total Dana Terkumpul</h2>
-            <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 gradient-text mb-2" id="totalSaldo">Memuat...</div>
-            <p class="text-xs text-slate-400 bg-slate-50 inline-block px-3 py-1 rounded-full border border-slate-100">Target Iuran Anggota: Rp 500.000 / Orang</p>
-        </div>
+                rows.forEach((row) => {
+                    if (!row.c || !row.c[1] || !row.c[1].v || row.c[1].v.toString().includes('TOTAL')) return;
 
-        <!-- Banner Donasi Umum -->
-        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-3xl p-6 mb-6 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left shadow-sm">
-            <div class="w-12 h-12 flex-shrink-0 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
-                <i class="fa-solid fa-hand-holding-heart text-xl"></i>
-            </div>
-            <div>
-                <h2 class="text-lg font-bold text-blue-800 mb-1">Terbuka Untuk Umum!</h2>
-                <p class="text-sm text-blue-600 leading-relaxed">Mari berpartisipasi menyukseskan acara Maulid. Kami menerima infaq/donasi seikhlasnya dari Bapak/Ibu. Insyaallah menjadi amal jariyah.</p>
-            </div>
-        </div>
+                    const nama = row.c[1].v.toString();
+                    const bayar = row.c[2] ? Number(row.c[2].v) || 0 : 0;
+                    const namaLower = nama.toLowerCase();
+                    totalTerkumpul += bayar;
+
+                    let statusHTML = '';
+                    
+                    if (namaLower.includes('hamba allah') || namaLower.includes('donatur') || namaLower.includes('umum') || namaLower.includes('infaq')) {
+                        statusHTML = '<span class="inline-flex items-center justify-center bg-blue-50 text-blue-600 py-1 px-3 rounded-full text-xs font-semibold border border-blue-100"><i class="fa-solid fa-heart text-[10px] mr-1"></i> Donasi</span>';
+                    } else if (bayar >= targetPerOrang) {
+                        statusHTML = '<span class="inline-flex items-center justify-center bg-emerald-50 text-emerald-600 py-1 px-3 rounded-full text-xs font-semibold border border-emerald-100"><i class="fa-solid fa-check text-[10px] mr-1"></i> Lunas</span>';
+                    } else if (bayar > 0) {
+                        statusHTML = '<span class="inline-flex items-center justify-center bg-amber-50 text-amber-600 py-1 px-3 rounded-full text-xs font-semibold border border-amber-100"><i class="fa-solid fa-clock-rotate-left text-[10px] mr-1"></i> Cicil</span>';
+                    } else {
+                        statusHTML = '<span class="inline-flex items-center justify-center bg-rose-50 text-rose-500 py-1 px-3 rounded-full text-xs font-semibold border border-rose-100"><i class="fa-solid fa-xmark text-[10px] mr-1"></i> Belum</span>';
+                    }
+
+                    // Simpan data ke array jika nominal > 0 untuk fitur "Terbaru"
+                    if (bayar > 0) {
+                        riwayatTransfer.push({ nama, bayar, statusHTML });
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50/50 transition-colors duration-200";
+                    tr.innerHTML = `
+                        <td class="p-4 text-slate-400 text-center">${nomorUrut++}</td>
+                        <td class="p-4 font-semibold text-slate-700">${nama}</td>
+                        <td class="p-4 text-emerald-600 font-bold">${formatRupiah(bayar)}</td>
+                        <td class="p-4 text-center">${statusHTML}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById('totalSaldo').innerText = formatRupiah(totalTerkumpul);
+
+                // --- LOGIKA AKTIVITAS TERBARU ---
+                // Ambil 3 transaksi terakhir, lalu balik urutannya (reverse) agar yang paling baru di atas
+                const tigaTerbaru = riwayatTransfer.slice(-3).reverse();
+
+                if (tigaTerbaru.length > 0) {
+                    tigaTerbaru.forEach(trx => {
+                        listTerbaru.innerHTML += `
+                            <div class="flex justify-between items-center p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center">
+                                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-bold text-slate-700">${trx.nama}</p>
+                                        <p class="text-[11px] text-slate-400">Baru saja berpartisipasi</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-bold text-emerald-600">+${formatRupiah(trx.bayar)}</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    listTerbaru.innerHTML = '<div class="text-center p-4 text-slate-400 text-sm">Belum ada transaksi.</div>';
+                }
+            })
+            .catch(error => {
+                document.getElementById('tabelAnggota').innerHTML = '<tr><td colspan="4" class="text-center p-8 text-rose-500 bg-rose-50"><i class="fa-solid fa-triangle-exclamation mb-2 text-xl block"></i>Gagal memuat data. Pastikan Google Sheets sudah di-share "Siapa saja memiliki link".</td></tr>';
+                document.getElementById('listTerbaru').innerHTML = '<div class="text-center p-4 text-rose-500 text-sm">Gagal memuat data.</div>';
+            });
 
         <!-- Card QRIS & Tombol WA -->
         <div class="glass-card rounded-3xl p-8 mb-6 text-center">
