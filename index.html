@@ -3,338 +3,415 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kas & Donasi Maulid</title>
+    <title>Kas & Donasi</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Poppins', 'sans-serif'] }, colors: { brand: '#059669', brandLight: '#10b981' } } } }
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        primary: '#4338ca', // Indigo
+                        primaryHover: '#3730a3',
+                        bgGradientStart: '#F0F4FF',
+                        bgGradientEnd: '#F5F3FF'
+                    }
+                }
+            }
+        }
     </script>
     <style>
-        body { background-color: #f1f5f9; background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px; }
-        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08); }
-        .gradient-text { background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .cb-custom:checked + div { background-color: #10b981; color: white; border-color: #10b981; box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39); transform: translateY(-2px); }
-        .smooth-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        body { background: linear-gradient(135deg, #F0F4FF 0%, #F5F3FF 100%); min-height: 100vh; }
+        .tab-active { background-color: white; color: #4338ca; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); font-weight: 600; }
+        .tab-inactive { color: #64748b; font-weight: 500; }
+        .tab-inactive:hover { color: #4338ca; }
+        .hide { display: none !important; }
+        
+        /* Grid Bulan Custom Styles */
+        .bulan-lunas { background-color: #ecfdf5; border: 1px solid #d1fae5; pointer-events: none; }
+        .bulan-lunas .badge { background-color: #d1fae5; color: #059669; }
+        .bulan-lunas .title { color: #059669; }
+        
+        .bulan-belum { background-color: white; border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.2s; }
+        .bulan-belum:hover { border-color: #cbd5e1; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .bulan-belum .badge { background-color: #f1f5f9; color: #94a3b8; }
+        .bulan-belum .title { color: #64748b; }
+        
+        .bulan-pilih { background-color: #fffbeb; border: 1px solid #fef3c7; cursor: pointer; }
+        .bulan-pilih .badge { background-color: #fef3c7; color: #d97706; }
+        .bulan-pilih .title { color: #d97706; }
     </style>
 </head>
-<body class="font-sans antialiased text-slate-800 pb-12 selection:bg-brand selection:text-white">
+<body class="font-sans text-slate-800 pb-12 antialiased">
 
-    <!-- HEADER -->
-    <header class="bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-500 text-white pt-12 pb-28 px-4 rounded-b-[2.5rem] shadow-xl relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full bg-white opacity-5 pattern-dots"></div>
-        <div class="container mx-auto text-center max-w-3xl relative z-10">
-            <!-- Tombol Admin -->
-            <button onclick="loginAdmin()" id="btnLogin" class="absolute top-0 right-0 bg-white/20 hover:bg-white/30 text-white text-xs py-1.5 px-4 rounded-full backdrop-blur-md smooth-transition border border-white/40 shadow-sm">
-                <i class="fa-solid fa-lock mr-1"></i> Admin
-            </button>
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full backdrop-blur-sm mb-3 shadow-inner">
-                <i class="fa-solid fa-mosque text-3xl text-white"></i>
-            </div>
-            <h1 class="text-3xl md:text-4xl font-bold mb-2 tracking-tight">Kas & Donasi Maulid</h1>
-            <p class="text-emerald-100 text-sm md:text-base font-light tracking-wide">Transparan, Mudah, dan Amanah</p>
+    <!-- NAVBAR LOGO -->
+    <nav class="p-6 flex items-center gap-3">
+        <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-md">
+            <i class="fa-solid fa-wallet"></i>
         </div>
-    </header>
+        <h1 class="text-lg font-extrabold text-slate-800 tracking-tight" id="appTitle">Kas Bersama</h1>
+    </nav>
 
-    <main class="container mx-auto px-4 max-w-3xl -mt-20 relative z-20">
+    <main class="container mx-auto px-4 max-w-2xl mt-4">
         
-        <!-- CARD TOTAL SALDO -->
-        <div class="glass-card rounded-[2rem] p-8 mb-8 text-center transform hover:scale-[1.02] smooth-transition">
-            <h2 class="text-slate-400 font-medium mb-2 text-xs uppercase tracking-widest">Total Dana Terkumpul</h2>
-            <div class="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-emerald-600 to-teal-500 gradient-text mb-2 drop-shadow-sm" id="totalSaldo">
-                <i class="fa-solid fa-spinner fa-spin text-3xl"></i>
-            </div>
+        <!-- TABS SWITCHER -->
+        <div class="bg-white/50 backdrop-blur-md rounded-2xl p-1.5 flex mb-12 shadow-sm border border-white max-w-lg mx-auto">
+            <button onclick="switchTab('bayar')" id="btnTabBayar" class="flex-1 py-3 rounded-xl tab-active flex items-center justify-center gap-2 text-sm transition-all">
+                <i class="fa-solid fa-file-invoice"></i> Bayar Iuran
+            </button>
+            <button onclick="switchTab('transparansi')" id="btnTabTransparansi" class="flex-1 py-3 rounded-xl tab-inactive flex items-center justify-center gap-2 text-sm transition-all">
+                <i class="fa-solid fa-chart-pie"></i> Transparansi Kas
+            </button>
         </div>
 
-        <!-- FITUR ADMIN (Disembunyikan secara default) -->
-        <div id="adminSection" class="hidden glass-card rounded-[2rem] p-6 mb-8 border-t-4 border-emerald-500 relative overflow-hidden shadow-2xl">
-            <div class="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] font-bold px-4 py-1.5 rounded-bl-2xl uppercase tracking-wider">Mode Bendahara</div>
-            <h2 class="text-xl font-bold text-slate-800 mb-6 mt-2 flex items-center"><i class="fa-solid fa-user-check text-emerald-500 mr-3 text-2xl"></i>ACC Saldo Masuk</h2>
-            <form id="formUpdate" class="space-y-5">
-                <div>
-                    <label class="block text-sm font-semibold text-slate-600 mb-2">Pilih Nama Anggota</label>
-                    <select id="selectNamaAdmin" onchange="toggleInputManual('selectNamaAdmin', 'inputNamaManualAdmin')" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm bg-slate-50 cursor-pointer appearance-none">
-                        <option value="" disabled selected>Memuat daftar nama...</option>
-                    </select>
-                    <input type="text" id="inputNamaManualAdmin" placeholder="Ketik nama donatur baru..." class="hidden w-full mt-2 px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm bg-slate-50">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-600 mb-2">Nominal Transfer (Rp)</label>
-                    <div class="relative">
-                        <span class="absolute left-4 top-3 text-slate-400 font-semibold">Rp</span>
-                        <input type="number" id="inputNominalAdmin" required placeholder="Contoh: 200000" class="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm bg-slate-50">
-                    </div>
-                </div>
-                <div class="flex gap-3 pt-2">
-                    <button type="submit" id="btnSubmitAdmin" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl smooth-transition flex justify-center items-center shadow-lg shadow-emerald-500/30">
-                        <i class="fa-solid fa-check-circle mr-2"></i> ACC & Simpan
-                    </button>
-                    <button type="button" onclick="logoutAdmin()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3.5 px-5 rounded-xl smooth-transition">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- FITUR ANGGOTA: FORM BAYAR OTOMATIS -->
-        <div class="glass-card rounded-[2rem] p-6 md:p-8 mb-8 relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
-            <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center"><i class="fa-solid fa-wallet text-blue-500 mr-3"></i>Pembayaran Mandiri</h2>
-            <p class="text-sm text-slate-500 mb-6">Pilih nama dan bulan tagihan Anda, sistem akan memandu prosesnya.</p>
+        <!-- =========================================
+             HALAMAN 1: BAYAR IURAN
+             ========================================= -->
+        <div id="viewBayar">
             
-            <div class="space-y-6">
-                <!-- Step 1: Pilih Nama -->
-                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">1. Siapa nama Anda?</label>
-                    <div class="relative">
-                        <select id="selectNamaAnggota" onchange="toggleInputManual('selectNamaAnggota', 'inputNamaManualAnggota')" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 cursor-pointer appearance-none font-medium text-slate-700">
-                            <option value="" disabled selected>Memuat daftar nama...</option>
+            <!-- STEP 1: PILIH NAMA -->
+            <div id="step1">
+                <div class="text-center mb-10">
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-[#2a3042] mb-4 tracking-tight">Kas Bersama</h2>
+                    <p class="text-slate-500 text-sm md:text-base px-4">Silahkan pilih nama Anda untuk melihat tagihan iuran.<br>Jika tidak ada nama Anda mohon hubungi pengurus.</p>
+                </div>
+
+                <div class="bg-white rounded-[2rem] p-6 md:p-8 shadow-xl shadow-indigo-100/50 border border-slate-50">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Nama Anggota</label>
+                    <div class="relative mb-8">
+                        <select id="selectNama" class="w-full px-5 py-4 border-2 border-slate-100 rounded-2xl focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 text-lg font-bold text-slate-700 bg-slate-50 cursor-pointer appearance-none transition-all">
+                            <option value="" disabled selected>PILIH NAMA...</option>
                         </select>
-                        <i class="fa-solid fa-chevron-down absolute right-4 top-4 text-slate-400"></i>
+                        <i class="fa-solid fa-chevron-down absolute right-6 top-5 text-slate-400"></i>
                     </div>
-                    <input type="text" id="inputNamaManualAnggota" placeholder="Ketik nama Anda di sini..." class="hidden w-full mt-3 px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50">
-                </div>
-
-                <!-- Step 2: Pilih Bulan -->
-                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
-                    <label class="block text-sm font-semibold text-slate-700 mb-3">2. Bulan apa yang ingin dibayar?</label>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="gridBulan">
-                        <!-- Checkbox via JS -->
-                    </div>
-                </div>
-
-                <!-- Step 3: Checkout Card -->
-                <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-6 rounded-2xl text-white shadow-xl relative overflow-hidden">
-                    <!-- Ornamen -->
-                    <i class="fa-solid fa-rupiah-sign absolute -right-4 -top-6 text-9xl text-white/5 opacity-20"></i>
                     
-                    <span class="text-slate-300 text-sm font-medium">Total Tagihan Anda:</span>
-                    <div class="text-3xl font-bold text-emerald-400 mt-1 mb-6" id="labelTotalTagihan">Rp 0</div>
-                    
-                    <!-- Area Bayar -->
-                    <div class="bg-white/10 p-5 rounded-xl backdrop-blur-sm border border-white/20 text-center">
-                        <p class="text-xs text-slate-300 mb-3"><i class="fa-solid fa-circle-info mr-1"></i>Scan QRIS di bawah dengan nominal di atas</p>
-                        
-                        <!-- GANTI NAMA GAMBAR QRIS DI BAWAH INI -->
-                        <div class="inline-block bg-white p-2 rounded-xl mb-4 shadow-lg">
-                            <img src="qris.jpg" alt="QRIS" class="w-48 h-auto rounded-lg">
+                    <button onclick="lanjutkanKeBulan()" class="w-full bg-primary hover:bg-primaryHover text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-primary/30 flex justify-center items-center gap-2 text-lg">
+                        Lanjutkan <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 2: PILIH BULAN -->
+            <div id="step2" class="hide">
+                <!-- User Info Bar -->
+                <div class="flex items-center justify-between bg-white rounded-2xl p-4 mb-8 shadow-sm border border-slate-100">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-indigo-50 text-primary font-bold text-xl rounded-full flex items-center justify-center" id="userInitial">A</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Anggota</p>
+                            <p class="text-lg font-extrabold text-[#2a3042]" id="userNameDisplay">NAMA ANGGOTA</p>
                         </div>
-
-                        <button onclick="kirimKonfirmasiWA()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 px-6 rounded-xl smooth-transition flex justify-center items-center shadow-lg hover:shadow-[#25D366]/40 transform hover:-translate-y-1">
-                            <i class="fa-brands fa-whatsapp text-xl mr-2"></i> Konfirmasi Sudah Transfer
-                        </button>
                     </div>
+                    <button onclick="kembaliKeStep1()" class="text-primary bg-indigo-50 hover:bg-indigo-100 px-4 py-2 rounded-xl text-sm font-bold transition-colors">
+                        Ganti
+                    </button>
+                </div>
+
+                <!-- Title & Year -->
+                <div class="flex justify-between items-end mb-6 px-2">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-[#2a3042] mb-1">Tagihan Iuran</h2>
+                        <p class="text-slate-500 text-sm">Ketuk bulan yang ingin dibayar</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl shadow-sm text-sm flex items-center gap-2">
+                        Tahun 2026 <i class="fa-solid fa-chevron-down text-slate-400 text-xs"></i>
+                    </div>
+                </div>
+
+                <!-- Grid Bulan -->
+                <div class="bg-white rounded-[2rem] p-6 shadow-xl shadow-indigo-100/50 border border-slate-50 mb-6">
+                    <div class="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-4" id="gridBulan">
+                        <!-- Bulan dirender via JS -->
+                    </div>
+                </div>
+
+                <!-- Action Bayar -->
+                <div id="boxBayar" class="hide bg-gradient-to-br from-[#2a3042] to-slate-800 rounded-[2rem] p-6 shadow-xl text-white transform transition-all translate-y-0 relative overflow-hidden">
+                    <i class="fa-solid fa-rupiah-sign absolute -right-6 -bottom-6 text-9xl opacity-10"></i>
+                    <p class="text-slate-300 text-sm font-medium mb-1">Total Tagihan Dipilih:</p>
+                    <div class="text-3xl font-extrabold text-emerald-400 mb-6" id="totalBayarText">Rp 0</div>
+                    
+                    <button onclick="bukaModalQRIS()" class="w-full bg-white text-[#2a3042] hover:bg-slate-100 font-bold py-4 rounded-2xl transition-all shadow-lg flex justify-center items-center gap-2 text-lg">
+                        <i class="fa-solid fa-qrcode"></i> Bayar Sekarang
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- TABEL LAPORAN -->
-        <div class="glass-card rounded-[2rem] overflow-hidden mb-8 border border-slate-100 shadow-sm">
-            <div class="p-6 border-b border-slate-100 bg-white/50 flex items-center justify-between">
-                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-clipboard-list text-emerald-500 mr-2"></i>Laporan Pembayaran</h2>
-                <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full"><i class="fa-solid fa-rotate mr-1"></i>Live</span>
+        <!-- =========================================
+             HALAMAN 2: TRANSPARANSI KAS
+             ========================================= -->
+        <div id="viewTransparansi" class="hide">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-primary mb-3 tracking-tight">Transparansi Keuangan</h2>
+                <p class="text-slate-500 text-sm md:text-base">Laporan mutasi uang kas secara real-time.</p>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="bg-slate-50 text-slate-400 text-xs uppercase tracking-wider">
-                            <th class="p-4 font-semibold border-b">Nama Anggota</th>
-                            <th class="p-4 font-semibold border-b">Telah Bayar</th>
-                            <th class="p-4 font-semibold border-b text-center">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelAnggota" class="text-sm divide-y divide-slate-50">
-                        <tr><td colspan="3" class="text-center p-8 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Memuat data terbaru...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
-        <div class="text-center text-xs text-slate-400 pb-4">
-            <p>&copy; 2026 Kas & Donasi Maulid. Sistem Otomatis.</p>
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-primary rounded-3xl p-6 text-white shadow-lg shadow-primary/40 md:col-span-1 h-full flex flex-col justify-center">
+                    <p class="text-xs font-bold text-indigo-200 uppercase tracking-wider mb-2">Total Saldo Kas</p>
+                    <h3 class="text-3xl font-extrabold" id="saldoTotalM">Rp 0</h3>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-1 gap-4 md:col-span-2">
+                    <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm">
+                        <p class="text-xs font-bold text-emerald-500 uppercase tracking-wider mb-1 flex items-center gap-1"><i class="fa-solid fa-arrow-trend-up"></i> Masuk Bulan Ini</p>
+                        <h3 class="text-xl font-extrabold text-slate-800" id="saldoMasukM">Rp 0</h3>
+                    </div>
+                    <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm">
+                        <p class="text-xs font-bold text-rose-500 uppercase tracking-wider mb-1 flex items-center gap-1"><i class="fa-solid fa-arrow-trend-down"></i> Keluar Bulan Ini</p>
+                        <h3 class="text-xl font-extrabold text-slate-800">Rp 0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Riwayat Mutasi -->
+            <div class="bg-white rounded-[2rem] p-6 md:p-8 shadow-xl shadow-indigo-100/50 border border-slate-50">
+                <h3 class="font-bold text-slate-700 mb-6 flex items-center gap-2"><i class="fa-regular fa-clock text-primary"></i> Riwayat Penerimaan</h3>
+                <div class="space-y-4" id="listMutasi">
+                    <div class="text-center py-8 text-slate-400"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i><br>Memuat riwayat...</div>
+                </div>
+            </div>
         </div>
 
     </main>
 
+    <!-- MODAL QRIS & WA -->
+    <div id="modalQRIS" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hide flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="bg-white rounded-[2rem] w-full max-w-md overflow-hidden shadow-2xl transform scale-95 transition-transform" id="modalContent">
+            <div class="bg-slate-50 p-4 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="font-bold text-slate-800">Selesaikan Pembayaran</h3>
+                <button onclick="tutupModalQRIS()" class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-slate-400 hover:text-rose-500 shadow-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 text-center">
+                <p class="text-sm text-slate-500 mb-4">Silakan scan QRIS di bawah sejumlah <b><span id="modalTotal" class="text-slate-800 font-bold"></span></b>.</p>
+                <div class="inline-block border-2 border-slate-100 p-2 rounded-2xl mb-6 shadow-sm">
+                    <!-- GANTI NAMA FILE GAMBAR QRIS DI SINI -->
+                    <img src="qris.jpg" alt="QRIS" class="w-48 h-48 rounded-xl object-cover">
+                </div>
+                <button onclick="konfirmasiWA()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 rounded-xl transition-all flex justify-center items-center gap-2 shadow-lg shadow-[#25D366]/30">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Konfirmasi via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ==========================================
-        // PENGATURAN UMUM & API
+        // KONFIGURASI
         // ==========================================
         const sheetId = '16bc8UiTpSYewlUsYszIOoGadHWztTsdN6ERtLey7Htw';
         const endpoint = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
         
-        // SCRIPT GOOGLE APP
-        const gasUrl = 'https://script.google.com/macros/s/AKfycbz_xNr20ZLOIAIf3GkMkPhgKjHp0GSnooX1zDgXHLv3EleTM5rgxLn6ybGbFGUdiseQ/exec'; 
-        
-        // WHATSAPP BENDAHARA
+        // GANTI DENGAN NOMOR WA BENDAHARA
         const noWABendahara = '6289699651535'; 
-        
-        const PIN_BENDAHARA = "121212";
         const hargaPerBulan = 100000;
+        
         const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
-
-        // ==========================================
-        // RENDER PILIHAN BULAN
-        // ==========================================
-        const daftarBulan = ['September', 'Oktober', 'November', 'Desember', 'Januari'];
-        const gridBulan = document.getElementById('gridBulan');
-        let totalTagihanAnggota = 0;
+        
+        let dataGlobal = [];
+        let totalSaldoGlobal = 0;
+        let penggunaAktif = null;
         let bulanDipilih = [];
 
-        daftarBulan.forEach(bulan => {
-            const label = document.createElement('label');
-            label.className = "cursor-pointer block";
-            label.innerHTML = `
-                <input type="checkbox" value="${bulan}" class="cb-custom sr-only" onchange="hitungTotal()">
-                <div class="border border-slate-200 text-slate-600 py-3 px-2 rounded-xl text-xs sm:text-sm font-semibold text-center bg-slate-50 smooth-transition">
-                    ${bulan}
-                </div>
-            `;
-            gridBulan.appendChild(label);
-        });
-
-        function hitungTotal() {
-            const checkboxes = document.querySelectorAll('.cb-custom:checked');
-            bulanDipilih = Array.from(checkboxes).map(cb => cb.value);
-            totalTagihanAnggota = checkboxes.length * hargaPerBulan;
-            document.getElementById('labelTotalTagihan').innerText = formatRupiah(totalTagihanAnggota);
-        }
+        const listNamaBulan = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
 
         // ==========================================
-        // FITUR DROPDOWN NAMA (Otomatis dari Sheet)
+        // LOGIK NAVIGASI TAB
         // ==========================================
-        function toggleInputManual(selectId, inputId) {
-            const select = document.getElementById(selectId);
-            const input = document.getElementById(inputId);
-            if (select.value === 'LAINNYA') {
-                input.classList.remove('hidden');
-                input.focus();
+        function switchTab(tab) {
+            const btnBayar = document.getElementById('btnTabBayar');
+            const btnTrans = document.getElementById('btnTabTransparansi');
+            const viewBayar = document.getElementById('viewBayar');
+            const viewTrans = document.getElementById('viewTransparansi');
+
+            if(tab === 'bayar') {
+                btnBayar.className = 'flex-1 py-3 rounded-xl tab-active flex items-center justify-center gap-2 text-sm transition-all';
+                btnTrans.className = 'flex-1 py-3 rounded-xl tab-inactive flex items-center justify-center gap-2 text-sm transition-all';
+                viewBayar.classList.remove('hide');
+                viewTrans.classList.add('hide');
             } else {
-                input.classList.add('hidden');
-                input.value = ''; // bersihkan jika tidak dipakai
+                btnTrans.className = 'flex-1 py-3 rounded-xl tab-active flex items-center justify-center gap-2 text-sm transition-all';
+                btnBayar.className = 'flex-1 py-3 rounded-xl tab-inactive flex items-center justify-center gap-2 text-sm transition-all';
+                viewTrans.classList.remove('hide');
+                viewBayar.classList.add('hide');
             }
         }
 
-        function dapatkanNamaAktif(selectId, inputId) {
-            const select = document.getElementById(selectId);
-            const input = document.getElementById(inputId);
-            return select.value === 'LAINNYA' ? input.value.trim() : select.value;
-        }
-
         // ==========================================
-        // KONFIRMASI WA ANGGOTA
-        // ==========================================
-        function kirimKonfirmasiWA() {
-            const nama = dapatkanNamaAktif('selectNamaAnggota', 'inputNamaManualAnggota');
-            
-            if(!nama) return alert("⚠️ Silakan pilih atau isi Nama Anda terlebih dahulu!");
-            if(totalTagihanAnggota === 0) return alert("⚠️ Silakan pilih minimal 1 bulan yang ingin dibayar!");
-
-            const teksWA = `Assalamualaikum Bendahara, saya *${nama}* ingin konfirmasi pembayaran Kas Maulid.%0A%0A*Rincian Pembayaran:*%0A- Bulan: ${bulanDipilih.join(', ')}%0A- Total: *${formatRupiah(totalTagihanAnggota)}*%0A%0ABerikut saya lampirkan bukti transfer QRIS. Mohon di-ACC. Terima kasih.`;
-            window.open(`https://wa.me/${noWABendahara}?text=${teksWA}`, '_blank');
-        }
-
-        // ==========================================
-        // SISTEM LOGIN & ADMIN
-        // ==========================================
-        function loginAdmin() {
-            const pin = prompt("Masukkan PIN Keamanan Bendahara:");
-            if (pin === PIN_BENDAHARA) {
-                document.getElementById('adminSection').classList.remove('hidden');
-                document.getElementById('btnLogin').classList.add('hidden');
-            } else if (pin !== null) {
-                alert("❌ PIN Salah! Akses ditolak.");
-            }
-        }
-        function logoutAdmin() {
-            document.getElementById('adminSection').classList.add('hidden');
-            document.getElementById('btnLogin').classList.remove('hidden');
-        }
-
-        document.getElementById('formUpdate').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const namaACC = dapatkanNamaAktif('selectNamaAdmin', 'inputNamaManualAdmin');
-            const nominalACC = document.getElementById('inputNominalAdmin').value;
-            
-            if(!namaACC) return alert("⚠️ Pilih nama anggota yang ingin di-ACC!");
-
-            const btnSubmit = document.getElementById('btnSubmitAdmin');
-            const originalText = btnSubmit.innerHTML;
-            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Proses ACC...';
-            btnSubmit.disabled = true;
-
-            const formBody = new URLSearchParams({ 'nama': namaACC, 'nominal': nominalACC });
-
-            fetch(gasUrl, {
-                method: 'POST', mode: 'no-cors',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: formBody
-            }).then(() => {
-                alert(`✅ Berhasil! Saldo ${namaACC} telah ditambahkan sebesar ${formatRupiah(nominalACC)}.`);
-                window.location.reload();
-            }).catch(() => {
-                alert('❌ Terjadi kesalahan. Pastikan URL Web App Google Script sudah benar.');
-                btnSubmit.innerHTML = originalText;
-                btnSubmit.disabled = false;
-            });
-        });
-
-        // ==========================================
-        // MUAT DATA DARI GOOGLE SHEETS
+        // AMBIL DATA DARI GOOGLE SHEETS
         // ==========================================
         fetch(endpoint)
             .then(res => res.text())
             .then(text => {
                 const data = JSON.parse(text.substring(47).slice(0, -2));
-                const tbody = document.getElementById('tabelAnggota');
-                tbody.innerHTML = ''; 
+                let optionsHTML = '<option value="" disabled selected>PILIH NAMA...</option>';
+                const mutasiContainer = document.getElementById('listMutasi');
+                mutasiContainer.innerHTML = '';
                 
-                let total = 0;
-                let daftarNamaUnik = [];
-
                 data.table.rows.forEach((row) => {
                     if (!row.c || !row.c[1] || !row.c[1].v || row.c[1].v.toString().includes('TOTAL')) return;
                     
-                    const nama = row.c[1].v.toString();
+                    const nama = row.c[1].v.toString().toUpperCase();
                     const bayar = row.c[2] ? Number(row.c[2].v) || 0 : 0;
-                    total += bayar;
                     
-                    // Kumpulkan nama untuk dropdown
-                    if(!daftarNamaUnik.includes(nama)) daftarNamaUnik.push(nama);
-
-                    // Render Tabel
-                    let statusHTML = bayar >= 500000 
-                        ? '<span class="inline-flex items-center bg-emerald-100 text-emerald-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-check mr-1"></i>LUNAS</span>' 
-                        : (bayar > 0 
-                            ? '<span class="inline-flex items-center bg-amber-100 text-amber-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-clock mr-1"></i>CICIL</span>' 
-                            : '<span class="inline-flex items-center bg-rose-100 text-rose-600 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-xmark mr-1"></i>BELUM</span>');
-                    
-                    if (nama.toLowerCase().includes('hamba') || nama.toLowerCase().includes('donatur') || nama.toLowerCase().includes('umum')) {
-                        statusHTML = '<span class="inline-flex items-center bg-blue-100 text-blue-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-heart mr-1"></i>DONASI</span>';
+                    // Jangan masukkan hamba allah ke dropdown bayar rutin
+                    if(!nama.includes('HAMBA') && !nama.includes('UMUM') && !nama.includes('DONATUR')) {
+                        dataGlobal.push({ nama, bayar });
+                        optionsHTML += `<option value="${nama}">${nama}</option>`;
                     }
+                    
+                    totalSaldoGlobal += bayar;
 
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="p-4 font-semibold text-slate-700">${nama}</td>
-                            <td class="p-4 text-emerald-600 font-bold">${formatRupiah(bayar)}</td>
-                            <td class="p-4 text-center">${statusHTML}</td>
-                        </tr>`;
+                    // Render Riwayat Mutasi (Tampilan Saja)
+                    if(bayar > 0) {
+                        mutasiContainer.innerHTML += `
+                        <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 mb-3">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-500 flex items-center justify-center font-bold">
+                                    <i class="fa-solid fa-plus text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-700">Iuran: ${nama}</p>
+                                    <p class="text-xs text-slate-400">Telah Dibayar</p>
+                                </div>
+                            </div>
+                            <div class="font-bold text-emerald-600 text-sm">
+                                +${formatRupiah(bayar)}
+                            </div>
+                        </div>`;
+                    }
                 });
+
+                document.getElementById('selectNama').innerHTML = optionsHTML;
                 
-                // Update Total Saldo
-                document.getElementById('totalSaldo').innerText = formatRupiah(total);
-
-                // Buat Opsi Dropdown
-                let optionsHTML = '<option value="" disabled selected>-- Klik di sini untuk memilih nama --</option>';
-                daftarNamaUnik.forEach(n => {
-                    optionsHTML += `<option value="${n}">${n}</option>`;
-                });
-                optionsHTML += '<option value="LAINNYA" class="font-bold text-blue-600">➕ Tambah Nama Baru / Donatur Umum...</option>';
-
-                // Masukkan opsi ke kedua select box (Anggota & Admin)
-                document.getElementById('selectNamaAnggota').innerHTML = optionsHTML;
-                document.getElementById('selectNamaAdmin').innerHTML = optionsHTML;
+                // Update Summary Angka
+                document.getElementById('saldoTotalM').innerText = formatRupiah(totalSaldoGlobal);
+                document.getElementById('saldoMasukM').innerText = formatRupiah(totalSaldoGlobal); // Asumsi masuk semua bulan ini
             });
+
+        // ==========================================
+        // LOGIKA PEMBAYARAN IURAN
+        // ==========================================
+        function lanjutkanKeBulan() {
+            const select = document.getElementById('selectNama');
+            if(!select.value) return alert("Pilih nama Anda terlebih dahulu.");
+            
+            const namaTerpilih = select.value;
+            penggunaAktif = dataGlobal.find(d => d.nama === namaTerpilih);
+            
+            if(!penggunaAktif) return alert("Data tidak ditemukan.");
+
+            // Tampilkan Step 2
+            document.getElementById('step1').classList.add('hide');
+            document.getElementById('step2').classList.remove('hide');
+            
+            // Set User Info
+            document.getElementById('userInitial').innerText = penggunaAktif.nama.charAt(0);
+            document.getElementById('userNameDisplay').innerText = penggunaAktif.nama;
+
+            renderGridBulan();
+        }
+
+        function kembaliKeStep1() {
+            document.getElementById('step2').classList.add('hide');
+            document.getElementById('step1').classList.remove('hide');
+            bulanDipilih = [];
+            document.getElementById('boxBayar').classList.add('hide');
+            document.getElementById('selectNama').value = "";
+        }
+
+        function renderGridBulan() {
+            const grid = document.getElementById('gridBulan');
+            grid.innerHTML = '';
+            
+            // Hitung berapa bulan yang sudah lunas (Asumsi 1 bulan = 100rb)
+            const jumlahBulanLunas = Math.floor(penggunaAktif.bayar / hargaPerBulan);
+
+            listNamaBulan.forEach((bulan, index) => {
+                const isLunas = index < jumlahBulanLunas;
+                const isDipilih = bulanDipilih.includes(bulan);
+                
+                let btnClass = isLunas ? 'bulan-lunas' : (isDipilih ? 'bulan-pilih' : 'bulan-belum');
+                let badgeText = isLunas ? 'LUNAS' : (isDipilih ? 'PENDING' : 'BELUM');
+                
+                // Jika lunas, fungsi onclick dikosongkan. Jika belum, panggil toggle.
+                let onClickFn = isLunas ? '' : `onclick="toggleBulan('${bulan}')"`;
+
+                grid.innerHTML += `
+                <div ${onClickFn} class="rounded-2xl p-4 flex flex-col items-center justify-center gap-2 h-24 ${btnClass}">
+                    <span class="title font-extrabold text-lg">${bulan}</span>
+                    <span class="badge text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">${badgeText}</span>
+                </div>
+                `;
+            });
+            
+            updateBoxBayar();
+        }
+
+        function toggleBulan(bulan) {
+            const idx = bulanDipilih.indexOf(bulan);
+            if(idx > -1) {
+                bulanDipilih.splice(idx, 1);
+            } else {
+                bulanDipilih.push(bulan);
+            }
+            // Sort berdasarkan urutan kalender
+            bulanDipilih.sort((a,b) => listNamaBulan.indexOf(a) - listNamaBulan.indexOf(b));
+            
+            renderGridBulan();
+        }
+
+        function updateBoxBayar() {
+            const box = document.getElementById('boxBayar');
+            const teks = document.getElementById('totalBayarText');
+            
+            if(bulanDipilih.length > 0) {
+                box.classList.remove('hide');
+                const total = bulanDipilih.length * hargaPerBulan;
+                teks.innerText = formatRupiah(total);
+            } else {
+                box.classList.add('hide');
+            }
+        }
+
+        // ==========================================
+        // MODAL & WA
+        // ==========================================
+        function bukaModalQRIS() {
+            const modal = document.getElementById('modalQRIS');
+            const content = document.getElementById('modalContent');
+            const total = bulanDipilih.length * hargaPerBulan;
+            
+            document.getElementById('modalTotal').innerText = formatRupiah(total);
+            
+            modal.classList.remove('hide');
+            // Animasi masuk
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function tutupModalQRIS() {
+            const modal = document.getElementById('modalQRIS');
+            const content = document.getElementById('modalContent');
+            
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hide');
+            }, 300);
+        }
+
+        function konfirmasiWA() {
+            const total = bulanDipilih.length * hargaPerBulan;
+            const teksWA = `Halo Bendahara, saya *${penggunaAktif.nama}* ingin konfirmasi pembayaran iuran.%0A%0A*Rincian Pembayaran:*%0A- Bulan: ${bulanDipilih.join(', ')}%0A- Total Tagihan: *${formatRupiah(total)}*%0A%0ABerikut saya lampirkan bukti transfer QRIS. Mohon segera di-ACC. Terima kasih.`;
+            window.open(`https://wa.me/${noWABendahara}?text=${teksWA}`, '_blank');
+        }
     </script>
 </body>
 </html>
