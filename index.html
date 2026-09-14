@@ -8,17 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
-                    colors: {
-                        primary: '#059669',
-                        primaryHover: '#047857',
-                    }
-                }
-            }
-        }
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Poppins', 'sans-serif'] }, colors: { primary: '#059669', primaryHover: '#047857' } } } }
     </script>
     <style>
         body { background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%); min-height: 100vh; }
@@ -54,37 +44,49 @@
 
     <main class="container mx-auto px-4 max-w-2xl mt-2">
         
-        <!-- FITUR ADMIN -->
-        <div id="adminSection" class="hide bg-white rounded-[2rem] p-6 mb-8 border-t-4 border-primary relative overflow-hidden shadow-xl">
+        <!-- FITUR ADMIN DENGAN DAFTAR ANTREAN (PENDING LIST) -->
+        <div id="adminSection" class="hide bg-white rounded-[2rem] p-6 md:p-8 mb-8 border-t-4 border-primary relative overflow-hidden shadow-2xl">
             <div class="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-4 py-1.5 rounded-bl-2xl uppercase tracking-wider">Mode Bendahara</div>
-            <h2 class="text-xl font-bold text-slate-800 mb-6 mt-2 flex items-center"><i class="fa-solid fa-user-check text-primary mr-3 text-2xl"></i>ACC Saldo Masuk</h2>
-            <form id="formUpdate" class="space-y-5">
-                <div>
-                    <label class="block text-sm font-semibold text-slate-600 mb-2">Pilih Nama (Sesuai WA)</label>
-                    <div class="relative">
-                        <select id="selectNamaAdmin" onchange="toggleInputManual('selectNamaAdmin', 'inputNamaManualAdmin')" required class="w-full px-5 py-3 border-2 border-slate-100 rounded-xl focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 text-sm font-bold text-slate-700 bg-slate-50 cursor-pointer appearance-none transition-all">
-                            <option value="" disabled selected>Pilih Nama...</option>
-                        </select>
-                        <i class="fa-solid fa-chevron-down absolute right-5 top-4 text-slate-400"></i>
+            <div class="flex justify-between items-center mb-6 mt-2">
+                <h2 class="text-xl font-bold text-slate-800 flex items-center"><i class="fa-solid fa-user-check text-primary mr-3 text-2xl"></i>Validasi Transfer</h2>
+                <button onclick="logoutAdmin()" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold py-2 px-4 rounded-xl text-sm transition-all"><i class="fa-solid fa-xmark"></i> Tutup</button>
+            </div>
+
+            <!-- 1. DAFTAR ANTREAN -->
+            <div class="mb-8">
+                <h3 class="text-sm font-bold text-slate-700 mb-3 border-b border-slate-100 pb-2 flex justify-between">
+                    <span>Antrean Transfer Baru (Menunggu ACC)</span>
+                    <button onclick="muatAntrean()" class="text-primary hover:text-primaryHover"><i class="fa-solid fa-rotate"></i></button>
+                </h3>
+                <div id="listPendingAdmin" class="space-y-3">
+                    <p class="text-xs text-slate-400 italic"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Memuat data antrean...</p>
+                </div>
+            </div>
+
+            <!-- 2. FORM MANUAL (Cadangan) -->
+            <div>
+                <h3 class="text-sm font-bold text-slate-700 mb-3 border-b border-slate-100 pb-2">ACC / Tambah Saldo Manual</h3>
+                <form id="formUpdateManual" class="space-y-4">
+                    <div>
+                        <div class="relative">
+                            <select id="selectNamaAdmin" onchange="toggleInputManual('selectNamaAdmin', 'inputNamaManualAdmin')" class="w-full px-5 py-3 border-2 border-slate-100 rounded-xl focus:outline-none focus:border-primary text-sm font-bold text-slate-700 bg-slate-50 cursor-pointer appearance-none transition-all">
+                                <option value="" disabled selected>Pilih Nama Anggota...</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down absolute right-5 top-4 text-slate-400"></i>
+                        </div>
+                        <input type="text" id="inputNamaManualAdmin" placeholder="Ketik nama donatur baru..." class="hide w-full mt-2 px-5 py-3 border-2 border-slate-100 rounded-xl text-sm font-bold bg-slate-50">
                     </div>
-                    <input type="text" id="inputNamaManualAdmin" placeholder="Ketik nama donatur baru..." class="hide w-full mt-3 px-5 py-3 border-2 border-slate-100 rounded-xl focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 text-sm font-bold text-slate-700 bg-slate-50 transition-all">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-600 mb-2">Nominal Transfer (Rp)</label>
-                    <div class="relative">
-                        <span class="absolute left-5 top-3.5 text-slate-400 font-bold">Rp</span>
-                        <input type="number" id="inputNominalAdmin" required placeholder="100000" class="w-full pl-12 pr-5 py-3 border-2 border-slate-100 rounded-xl focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 text-sm font-bold text-slate-700 bg-slate-50 transition-all">
+                    <div class="flex gap-2">
+                        <div class="relative flex-1">
+                            <span class="absolute left-4 top-3.5 text-slate-400 font-bold text-sm">Rp</span>
+                            <input type="number" id="inputNominalAdmin" placeholder="Nominal" class="w-full pl-10 pr-4 py-3 border-2 border-slate-100 rounded-xl focus:outline-none focus:border-primary text-sm font-bold bg-slate-50">
+                        </div>
+                        <button type="submit" id="btnSubmitAdmin" class="bg-primary hover:bg-primaryHover text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md">
+                            Simpan Manual
+                        </button>
                     </div>
-                </div>
-                <div class="flex gap-3 pt-2">
-                    <button type="submit" id="btnSubmitAdmin" class="flex-1 bg-primary hover:bg-primaryHover text-white font-bold py-3.5 rounded-xl transition-all flex justify-center items-center shadow-lg shadow-primary/30">
-                        <i class="fa-solid fa-check-circle mr-2"></i> ACC & Simpan
-                    </button>
-                    <button type="button" onclick="logoutAdmin()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3.5 px-5 rounded-xl transition-all">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
 
         <!-- PEMBAYARAN IURAN & DONASI -->
@@ -98,14 +100,14 @@
                 <div class="bg-white rounded-[2rem] p-6 md:p-8 shadow-xl shadow-emerald-100/50 border border-slate-50">
                     <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Nama Anggota / Donatur</label>
                     <div class="relative mb-8">
-                        <select id="selectNama" onchange="toggleInputManual('selectNama', 'inputNamaManualAnggota')" class="w-full px-5 py-4 border-2 border-slate-100 rounded-2xl focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 text-lg font-bold text-slate-700 bg-slate-50 cursor-pointer appearance-none transition-all">
+                        <select id="selectNama" onchange="toggleInputManual('selectNama', 'inputNamaManualAnggota')" class="w-full px-5 py-4 border-2 border-slate-100 rounded-2xl focus:outline-none focus:border-primary text-lg font-bold text-slate-700 bg-slate-50 cursor-pointer appearance-none transition-all">
                             <option value="" disabled selected>PILIH NAMA ANDA...</option>
                         </select>
                         <i class="fa-solid fa-chevron-down absolute right-6 top-5 text-slate-400"></i>
                     </div>
-                    <input type="text" id="inputNamaManualAnggota" placeholder="Ketik nama Anda / Hamba Allah..." class="hide w-full mb-8 px-5 py-4 border-2 border-slate-100 rounded-2xl focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 text-lg font-bold text-slate-700 bg-slate-50 transition-all">
+                    <input type="text" id="inputNamaManualAnggota" placeholder="Ketik nama Anda / Hamba Allah..." class="hide w-full mb-8 px-5 py-4 border-2 border-slate-100 rounded-2xl focus:outline-none focus:border-primary text-lg font-bold text-slate-700 bg-slate-50 transition-all">
                     
-                    <button onclick="lanjutkanKeBulan()" class="w-full bg-primary hover:bg-primaryHover text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-primary/30 flex justify-center items-center gap-2 text-lg">
+                    <button onclick="lanjutkanKeBulan()" class="w-full bg-primary hover:bg-primaryHover text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex justify-center items-center gap-2 text-lg">
                         Lanjutkan <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
@@ -133,18 +135,16 @@
                     </div>
                 </div>
 
-                <!-- Kontainer Grid Bulan (Khusus Anggota) -->
                 <div id="bulanInputContainer" class="bg-white rounded-[2rem] p-6 shadow-xl shadow-emerald-100/50 border border-slate-50 mb-6">
                     <div class="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-4" id="gridBulan"></div>
                 </div>
 
-                <!-- Kontainer Input Nominal Bebas (Khusus Donatur) -->
                 <div id="donasiInputContainer" class="hide bg-white rounded-[2rem] p-8 shadow-xl shadow-emerald-100/50 border border-slate-50 mb-6 text-center">
                     <h3 class="font-bold text-slate-700 mb-2">Masukkan Nominal Donasi</h3>
                     <p class="text-xs text-slate-400 mb-6">Berapapun donasi Anda akan sangat bermanfaat.</p>
                     <div class="relative max-w-sm mx-auto">
                         <span class="absolute left-6 top-4 text-slate-400 font-bold text-lg">Rp</span>
-                        <input type="number" id="inputNominalDonasi" onkeyup="updateTotalDonasi()" onchange="updateTotalDonasi()" placeholder="Seikhlasnya..." class="w-full pl-14 pr-5 py-4 border-2 border-slate-100 rounded-2xl focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 text-xl font-extrabold text-slate-700 bg-slate-50 transition-all">
+                        <input type="number" id="inputNominalDonasi" onkeyup="updateTotalDonasi()" onchange="updateTotalDonasi()" placeholder="Seikhlasnya..." class="w-full pl-14 pr-5 py-4 border-2 border-slate-100 rounded-2xl text-xl font-extrabold text-slate-700 bg-slate-50 transition-all">
                     </div>
                 </div>
 
@@ -188,7 +188,7 @@
 
             <div class="bg-white rounded-[2rem] p-6 shadow-xl shadow-emerald-100/50 border border-slate-50">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bold text-slate-700 flex items-center gap-2"><i class="fa-solid fa-clipboard-list text-primary"></i> Tabel Pembayaran & Donasi</h3>
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2"><i class="fa-solid fa-clipboard-list text-primary"></i> Tabel Penerimaan</h3>
                     <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full"><i class="fa-solid fa-rotate mr-1"></i>Live</span>
                 </div>
                 
@@ -208,7 +208,6 @@
                 </div>
             </div>
         </div>
-
     </main>
 
     <!-- MODAL QRIS & WA -->
@@ -223,8 +222,9 @@
                 <div class="inline-block border-2 border-slate-100 p-2 rounded-2xl mb-6 shadow-sm">
                     <img src="qris.jpg" alt="QRIS" class="w-48 h-48 rounded-xl object-cover">
                 </div>
-                <button onclick="konfirmasiWA()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 rounded-xl transition-all flex justify-center items-center gap-2 shadow-lg shadow-[#25D366]/30">
-                    <i class="fa-brands fa-whatsapp text-xl"></i> Konfirmasi via WhatsApp
+                <!-- TOMBOL KONFIRMASI TELAH DIUBAH MENJADI PROSES OTOMATIS -->
+                <button id="btnKonfirmasiWA" onclick="konfirmasiWADanAntre()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 rounded-xl transition-all flex justify-center items-center gap-2 shadow-lg">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Konfirmasi Sudah Transfer
                 </button>
             </div>
         </div>
@@ -232,8 +232,10 @@
 
     <script>
         const sheetId = '16bc8UiTpSYewlUsYszIOoGadHWztTsdN6ERtLey7Htw';
-        const endpoint = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
-        const gasUrl = 'https://script.google.com/macros/s/AKfycbz_xNr20ZLOIAIf3GkMkPhgKjHp0GSnooX1zDgXHLv3EleTM5rgxLn6ybGbFGUdiseQ/exec';
+        const endpointDataUtama = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+        const endpointPending = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Pending`; // URL Untuk Baca Antrean
+
+        const gasUrl = 'https://script.google.com/macros/s/AKfycbw5tQR9_D13mHbVBZjb0BHJur1Uw5qoAsbrBKju5ENR1a68Pttyk12UtQilvyFUn1C_/execc';
         
         const noWABendahara = '6289699651535'; 
         const PIN_BENDAHARA = "121212";
@@ -249,31 +251,114 @@
 
         const listNamaBulan = ['SEP', 'OKT', 'NOV', 'DES', 'JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU'];
 
+        // ==========================================
+        // FITUR ADMIN & VALIDASI (NEW)
+        // ==========================================
         function loginAdmin() {
             const pin = prompt("Masukkan PIN Keamanan Bendahara:");
             if (pin === PIN_BENDAHARA) {
                 document.getElementById('adminSection').classList.remove('hide');
                 document.getElementById('btnLogin').classList.add('hide');
+                muatAntrean(); // Panggil fungsi memuat antrean saat login
             } else if (pin !== null) {
-                alert("❌ PIN Salah! Akses ditolak.");
+                alert("❌ PIN Salah!");
             }
         }
-
         function logoutAdmin() {
             document.getElementById('adminSection').classList.add('hide');
             document.getElementById('btnLogin').classList.remove('hide');
         }
 
+        // MEMUAT DAFTAR ANTREAN PENDING DARI SHEETS "Pending"
+        function muatAntrean() {
+            const container = document.getElementById('listPendingAdmin');
+            container.innerHTML = '<p class="text-xs text-slate-400 italic"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Memuat data antrean...</p>';
+            
+            fetch(endpointPending)
+            .then(res => res.text())
+            .then(text => {
+                const data = JSON.parse(text.substring(47).slice(0, -2));
+                container.innerHTML = '';
+                let adaAntrean = false;
+                
+                if(data.table && data.table.rows) {
+                    data.table.rows.forEach(row => {
+                        if(!row.c || !row.c[1] || !row.c[1].v) return;
+                        adaAntrean = true;
+                        const nama = row.c[1].v;
+                        const nominal = row.c[2].v;
+                        const tipe = row.c[3] ? row.c[3].v : '-';
+                        
+                        container.innerHTML += `
+                        <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-200 hover:border-primary transition-colors">
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">${nama}</p>
+                                <p class="text-xs text-primary font-bold">${formatRupiah(nominal)} <span class="text-slate-400 font-normal">(${tipe})</span></p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="aksiValidasi('${nama}', ${nominal}, 'acc_admin')" class="w-9 h-9 bg-primary text-white rounded-xl hover:bg-primaryHover flex items-center justify-center shadow-md"><i class="fa-solid fa-check"></i></button>
+                                <button onclick="aksiValidasi('${nama}', ${nominal}, 'tolak_admin')" class="w-9 h-9 bg-rose-500 text-white rounded-xl hover:bg-rose-600 flex items-center justify-center shadow-md"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>`;
+                    });
+                }
+                if(!adaAntrean) container.innerHTML = '<p class="text-xs text-slate-400 italic bg-slate-50 p-3 rounded-lg border border-slate-100">Belum ada antrean transfer masuk.</p>';
+            })
+            .catch(err => {
+                container.innerHTML = '<p class="text-xs text-slate-400 italic bg-slate-50 p-3 rounded-lg border border-slate-100">Belum ada antrean transfer baru.</p>';
+            });
+        }
+
+        // AKSI KLIK TOMBOL CENTANG / SILANG DI ANTREAN
+        function aksiValidasi(nama, nominal, actionType) {
+            const isACC = (actionType === 'acc_admin');
+            const konfirm = confirm(`Apakah Anda yakin ingin ${isACC ? 'MENG-ACC' : 'MENOLAK'} transfer dari ${nama} sebesar ${formatRupiah(nominal)}?`);
+            if(!konfirm) return;
+            
+            const formBody = new URLSearchParams({ 'action': actionType, 'nama': nama, 'nominal': nominal });
+            
+            // Efek Loading Screen
+            document.body.style.cursor = 'wait';
+            
+            fetch(gasUrl, {
+                method: 'POST', mode: 'no-cors',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formBody
+            }).then(() => {
+                alert(isACC ? `✅ Saldo ${nama} berhasil ditambahkan!` : `🗑️ Antrean ${nama} berhasil dihapus.`);
+                window.location.reload();
+            });
+        }
+
+        // AKSI SIMPAN MANUAL (CADANGAN)
+        document.getElementById('formUpdateManual').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const namaACC = dapatkanNamaAktif('selectNamaAdmin', 'inputNamaManualAdmin');
+            const nominalACC = document.getElementById('inputNominalAdmin').value;
+            if(!namaACC || !nominalACC) return alert("Isi form dengan lengkap!");
+
+            const btnSubmit = document.getElementById('btnSubmitAdmin');
+            const originalText = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = 'Menyimpan...'; btnSubmit.disabled = true;
+
+            const formBody = new URLSearchParams({ 'action': 'manual_acc', 'nama': namaACC, 'nominal': nominalACC });
+
+            fetch(gasUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formBody })
+            .then(() => {
+                alert(`✅ Manual ACC Berhasil!`);
+                window.location.reload();
+            });
+        });
+
+
+        // ==========================================
+        // MUAT DATA UTAMA
+        // ==========================================
         function toggleInputManual(selectId, inputId) {
             const select = document.getElementById(selectId);
             const input = document.getElementById(inputId);
-            if (select.value === 'LAINNYA') {
-                input.classList.remove('hide');
-                input.focus();
-            } else {
-                input.classList.add('hide');
-                input.value = '';
-            }
+            if (select.value === 'LAINNYA') { input.classList.remove('hide'); input.focus(); } 
+            else { input.classList.add('hide'); input.value = ''; }
         }
 
         function dapatkanNamaAktif(selectId, inputId) {
@@ -282,35 +367,7 @@
             return select.value === 'LAINNYA' ? input.value.trim() : select.value;
         }
 
-        document.getElementById('formUpdate').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const namaACC = dapatkanNamaAktif('selectNamaAdmin', 'inputNamaManualAdmin');
-            const nominalACC = document.getElementById('inputNominalAdmin').value;
-            
-            if(!namaACC) return alert("⚠️ Pilih atau ketik nama terlebih dahulu!");
-
-            const btnSubmit = document.getElementById('btnSubmitAdmin');
-            const originalText = btnSubmit.innerHTML;
-            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Proses ACC...';
-            btnSubmit.disabled = true;
-
-            const formBody = new URLSearchParams({ 'nama': namaACC, 'nominal': nominalACC });
-
-            fetch(gasUrl, {
-                method: 'POST', mode: 'no-cors',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: formBody
-            }).then(() => {
-                alert(`✅ Berhasil! Saldo ${namaACC} telah ditambahkan sebesar ${formatRupiah(nominalACC)}.`);
-                window.location.reload();
-            }).catch(() => {
-                alert('❌ Terjadi kesalahan. Pastikan URL Web App Google Script sudah benar.');
-                btnSubmit.innerHTML = originalText;
-                btnSubmit.disabled = false;
-            });
-        });
-
-        fetch(endpoint)
+        fetch(endpointDataUtama)
             .then(res => res.text())
             .then(text => {
                 const data = JSON.parse(text.substring(47).slice(0, -2));
@@ -355,11 +412,13 @@
 
                 document.getElementById('selectNama').innerHTML = optionsHTML;
                 document.getElementById('selectNamaAdmin').innerHTML = optionsHTML;
-                
                 document.getElementById('saldoTotalM').innerText = formatRupiah(totalSaldoGlobal);
                 document.getElementById('saldoMasukM').innerText = formatRupiah(totalSaldoGlobal);
             });
 
+        // ==========================================
+        // ALUR PEMBAYARAN PENGGUNA
+        // ==========================================
         function lanjutkanKeBulan() {
             const select = document.getElementById('selectNama');
             const namaTerpilih = dapatkanNamaAktif('selectNama', 'inputNamaManualAnggota');
@@ -368,26 +427,21 @@
             
             isDonaturUmum = (select.value === 'LAINNYA');
             penggunaAktif = dataGlobal.find(d => d.nama === namaTerpilih);
-            
-            if(!penggunaAktif) {
-                penggunaAktif = { nama: namaTerpilih, bayar: 0 };
-            }
+            if(!penggunaAktif) penggunaAktif = { nama: namaTerpilih, bayar: 0 };
 
             document.getElementById('step1').classList.add('hide');
             document.getElementById('step2').classList.remove('hide');
-            
             document.getElementById('userInitial').innerText = penggunaAktif.nama.charAt(0);
             document.getElementById('userNameDisplay').innerText = penggunaAktif.nama;
             document.getElementById('userRoleDisplay').innerText = isDonaturUmum ? "Donatur Umum" : "Anggota";
 
-            // LOGIKA TAMPILAN BERDASARKAN ROLE
             if(isDonaturUmum) {
                 document.getElementById('judulLangkah2').innerText = "Donasi Sukarela";
                 document.getElementById('subjudulLangkah2').innerText = "Masukkan nominal seikhlasnya";
                 document.getElementById('periodeLabel').classList.add('hide');
                 document.getElementById('bulanInputContainer').classList.add('hide');
                 document.getElementById('donasiInputContainer').classList.remove('hide');
-                document.getElementById('boxBayar').classList.add('hide'); // disembunyikan sampai ada input nominal
+                document.getElementById('boxBayar').classList.add('hide');
             } else {
                 document.getElementById('judulLangkah2').innerText = "Tagihan Iuran";
                 document.getElementById('subjudulLangkah2').innerText = "Ketuk bulan untuk iuran (Rp 100rb/kotak)";
@@ -403,19 +457,17 @@
             document.getElementById('step1').classList.remove('hide');
             bulanDipilih = [];
             document.getElementById('boxBayar').classList.add('hide');
-            document.getElementById('inputNominalDonasi').value = ''; // Reset input donasi
+            document.getElementById('inputNominalDonasi').value = '';
         }
 
         function renderGridBulan() {
             const grid = document.getElementById('gridBulan');
             grid.innerHTML = '';
-            
             const jumlahBulanLunas = Math.floor(penggunaAktif.bayar / hargaPerBulan);
 
             listNamaBulan.forEach((bulan, index) => {
                 const isLunas = index < jumlahBulanLunas;
                 const isDipilih = bulanDipilih.includes(bulan);
-                
                 let btnClass = isLunas ? 'bulan-lunas' : (isDipilih ? 'bulan-pilih' : 'bulan-belum');
                 let badgeText = isLunas ? 'LUNAS' : (isDipilih ? 'PILIH' : 'BELUM');
                 let onClickFn = isLunas ? '' : `onclick="toggleBulan('${bulan}')"`;
@@ -431,11 +483,8 @@
 
         function toggleBulan(bulan) {
             const idx = bulanDipilih.indexOf(bulan);
-            if(idx > -1) {
-                bulanDipilih.splice(idx, 1);
-            } else {
-                bulanDipilih.push(bulan);
-            }
+            if(idx > -1) bulanDipilih.splice(idx, 1);
+            else bulanDipilih.push(bulan);
             bulanDipilih.sort((a,b) => listNamaBulan.indexOf(a) - listNamaBulan.indexOf(b));
             renderGridBulan();
         }
@@ -446,68 +495,70 @@
             if(bulanDipilih.length > 0) {
                 box.classList.remove('hide');
                 teks.innerText = formatRupiah(bulanDipilih.length * hargaPerBulan);
-            } else {
-                box.classList.add('hide');
-            }
+            } else box.classList.add('hide');
         }
 
         function updateTotalDonasi() {
             const nominal = parseInt(document.getElementById('inputNominalDonasi').value) || 0;
             const box = document.getElementById('boxBayar');
-            const teks = document.getElementById('totalBayarText');
-            
-            teks.innerText = formatRupiah(nominal);
-            
-            if(nominal > 0) {
-                box.classList.remove('hide');
-            } else {
-                box.classList.add('hide');
-            }
+            document.getElementById('totalBayarText').innerText = formatRupiah(nominal);
+            if(nominal > 0) box.classList.remove('hide');
+            else box.classList.add('hide');
         }
 
         function bukaModalQRIS() {
-            let total = 0;
-            if (isDonaturUmum) {
-                total = parseInt(document.getElementById('inputNominalDonasi').value) || 0;
-                if (total <= 0) return alert("Silakan masukkan nominal donasi terlebih dahulu.");
-            } else {
-                total = bulanDipilih.length * hargaPerBulan;
-                if (total <= 0) return alert("Silakan pilih bulan iuran terlebih dahulu.");
-            }
-
-            const modal = document.getElementById('modalQRIS');
-            const content = document.getElementById('modalContent');
+            let total = isDonaturUmum ? (parseInt(document.getElementById('inputNominalDonasi').value) || 0) : (bulanDipilih.length * hargaPerBulan);
+            if (total <= 0) return alert("Silakan tentukan nominal terlebih dahulu.");
             document.getElementById('modalTotal').innerText = formatRupiah(total);
-            
+            const modal = document.getElementById('modalQRIS');
             modal.classList.remove('hide');
-            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+            setTimeout(() => { modal.classList.remove('opacity-0'); document.getElementById('modalContent').classList.remove('scale-95'); }, 10);
         }
 
         function tutupModalQRIS() {
             const modal = document.getElementById('modalQRIS');
-            const content = document.getElementById('modalContent');
-            modal.classList.add('opacity-0');
-            content.classList.add('scale-95');
+            modal.classList.add('opacity-0'); document.getElementById('modalContent').classList.add('scale-95');
             setTimeout(() => { modal.classList.add('hide'); }, 300);
         }
 
-        function konfirmasiWA() {
-            let total = 0;
-            let tipeTagihan = "";
-            let rincian = "";
+        // ==========================================
+        // PROSES: MASUKKAN KE ANTREAN (PENDING) LALU BUKA WA
+        // ==========================================
+        function konfirmasiWADanAntre() {
+            let total = isDonaturUmum ? (parseInt(document.getElementById('inputNominalDonasi').value) || 0) : (bulanDipilih.length * hargaPerBulan);
+            let tipeTagihan = isDonaturUmum ? "Donasi Umum" : "Iuran Bulanan";
+            let rincian = isDonaturUmum ? `- Nominal: *${formatRupiah(total)}*` : `- Bulan: ${bulanDipilih.join(', ')}\n- Nominal: *${formatRupiah(total)}*`;
 
-            if (isDonaturUmum) {
-                total = parseInt(document.getElementById('inputNominalDonasi').value) || 0;
-                tipeTagihan = "donasi";
-                rincian = `- Nominal Donasi: *${formatRupiah(total)}*`;
-            } else {
-                total = bulanDipilih.length * hargaPerBulan;
-                tipeTagihan = "iuran";
-                rincian = `- Bulan: ${bulanDipilih.join(', ')}\n- Total Tagihan: *${formatRupiah(total)}*`;
-            }
+            // Ubah tombol jadi loading
+            const btn = document.getElementById('btnKonfirmasiWA');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xl mr-2"></i> Mengirim Data...';
+            btn.disabled = true;
 
-            const teksWA = `Halo Bendahara, saya *${penggunaAktif.nama}* ingin konfirmasi pembayaran ${tipeTagihan}.%0A%0A*Rincian Pembayaran:*%0A${encodeURIComponent(rincian)}%0A%0ABerikut saya lampirkan bukti transfer QRIS. Mohon segera di-ACC. Terima kasih.`;
-            window.open(`https://wa.me/${noWABendahara}?text=${teksWA}`, '_blank');
+            // Kirim ke Google Script sebagai "tambah_pending"
+            const formBody = new URLSearchParams({ 
+                'action': 'tambah_pending',
+                'nama': penggunaAktif.nama, 
+                'nominal': total,
+                'tipe': tipeTagihan
+            });
+
+            fetch(gasUrl, {
+                method: 'POST', mode: 'no-cors',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formBody
+            }).then(() => {
+                // Berhasil masuk antrean, Buka WhatsApp!
+                const teksWA = `Halo Bendahara, saya *${penggunaAktif.nama}* ingin konfirmasi pembayaran ${tipeTagihan}.%0A%0A*Rincian Pembayaran:*%0A${encodeURIComponent(rincian)}%0A%0ABerikut saya lampirkan bukti transfer QRIS. Mohon divalidasi. Terima kasih.`;
+                window.open(`https://wa.me/${noWABendahara}?text=${teksWA}`, '_blank');
+                
+                // Segarkan Halaman
+                alert("Terima kasih! Pembayaran Anda telah masuk ke daftar antrean validasi bendahara.");
+                window.location.reload();
+            }).catch(() => {
+                alert('Terdapat gangguan koneksi, silakan coba lagi.');
+                btn.innerHTML = originalHTML; btn.disabled = false;
+            });
         }
     </script>
 </body>
