@@ -13,16 +13,13 @@
     <style>
         body { background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%); min-height: 100vh; }
         .hide { display: none !important; }
-        
         .bulan-lunas { background-color: #ecfdf5; border: 1px solid #a7f3d0; pointer-events: none; }
         .bulan-lunas .badge { background-color: #a7f3d0; color: #047857; }
         .bulan-lunas .title { color: #047857; }
-        
         .bulan-belum { background-color: white; border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.2s; }
         .bulan-belum:hover { border-color: #cbd5e1; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .bulan-belum .badge { background-color: #f1f5f9; color: #94a3b8; }
         .bulan-belum .title { color: #64748b; }
-        
         .bulan-pilih { background-color: #fffbeb; border: 1px solid #fef3c7; cursor: pointer; }
         .bulan-pilih .badge { background-color: #fef3c7; color: #d97706; }
         .bulan-pilih .title { color: #d97706; }
@@ -44,7 +41,7 @@
 
     <main class="container mx-auto px-4 max-w-2xl mt-2">
         
-        <!-- FITUR ADMIN DENGAN DAFTAR ANTREAN -->
+        <!-- FITUR ADMIN -->
         <div id="adminSection" class="hide bg-white rounded-[2rem] p-6 md:p-8 mb-8 border-t-4 border-primary relative overflow-hidden shadow-2xl">
             <div class="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-4 py-1.5 rounded-bl-2xl uppercase tracking-wider">Mode Bendahara</div>
             <div class="flex justify-between items-center mb-6 mt-2">
@@ -52,7 +49,7 @@
                 <button onclick="logoutAdmin()" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold py-2 px-4 rounded-xl text-sm transition-all"><i class="fa-solid fa-xmark"></i> Tutup</button>
             </div>
 
-            <!-- 1. DAFTAR ANTREAN -->
+            <!-- ANTREAN PENDING -->
             <div class="mb-8">
                 <h3 class="text-sm font-bold text-slate-700 mb-3 border-b border-slate-100 pb-2 flex justify-between">
                     <span>Antrean Transfer Baru (Menunggu ACC)</span>
@@ -63,7 +60,7 @@
                 </div>
             </div>
 
-            <!-- 2. FORM MANUAL -->
+            <!-- FORM MANUAL -->
             <div>
                 <h3 class="text-sm font-bold text-slate-700 mb-3 border-b border-slate-100 pb-2">ACC / Tambah Saldo Manual</h3>
                 <form id="formUpdateManual" class="space-y-4">
@@ -89,12 +86,12 @@
             </div>
         </div>
 
-        <!-- PEMBAYARAN IURAN & DONASI -->
+        <!-- FORM UTAMA -->
         <div id="pembayaranSection" class="mb-12">
             <div id="step1">
                 <div class="text-center mb-10 mt-4">
                     <h2 class="text-4xl md:text-5xl font-extrabold text-[#2a3042] mb-4 tracking-tight">Iuran & Donasi</h2>
-                    <p class="text-slate-500 text-sm md:text-base px-4">Silakan pilih nama Anda untuk membayar tagihan iuran rutin.<br>Bagi donatur umum atau Hamba Allah, silakan pilih opsi <b>"+ Tambah Nama Baru / Donatur Umum"</b> di paling bawah.</p>
+                    <p class="text-slate-500 text-sm md:text-base px-4">Silakan pilih nama Anda untuk membayar iuran rutin.<br>Bagi donatur umum atau Hamba Allah, pilih opsi <b>"+ Tambah Nama Baru / Donatur Umum"</b> di paling bawah.</p>
                 </div>
 
                 <div class="bg-white rounded-[2rem] p-6 md:p-8 shadow-xl shadow-emerald-100/50 border border-slate-50">
@@ -223,7 +220,7 @@
                     <img src="qris.jpg" alt="QRIS" class="w-48 h-48 rounded-xl object-cover">
                 </div>
                 <button id="btnKonfirmasiWA" onclick="konfirmasiWADanAntre()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 rounded-xl transition-all flex justify-center items-center gap-2 shadow-lg">
-                    <i class="fa-brands fa-whatsapp text-xl"></i> Konfirmasi Sudah Transfer
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Konfirmasi via WhatsApp
                 </button>
             </div>
         </div>
@@ -250,9 +247,6 @@
 
         const listNamaBulan = ['SEP', 'OKT', 'NOV', 'DES', 'JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU'];
 
-        // ==========================================
-        // FITUR ADMIN & VALIDASI 
-        // ==========================================
         function loginAdmin() {
             const pin = prompt("Masukkan PIN Keamanan Bendahara:");
             if (pin === PIN_BENDAHARA) {
@@ -268,7 +262,6 @@
             document.getElementById('btnLogin').classList.remove('hide');
         }
 
-        // FUNGSI MEMUAT ANTREAN (DIPERBAIKI)
         function muatAntrean() {
             const container = document.getElementById('listPendingAdmin');
             container.innerHTML = '<p class="text-xs text-slate-400 italic"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Memuat data antrean...</p>';
@@ -283,14 +276,10 @@
                 if(data.table && data.table.rows) {
                     data.table.rows.forEach(row => {
                         if(!row.c || !row.c[1] || !row.c[1].v) return;
-                        
                         const nama = row.c[1].v.toString();
-                        
-                        // KODE PELINDUNG: JIKA NAMA ADALAH JUDUL KOLOM "Nama", MAKA ABAIKAN
                         if(nama.toLowerCase() === 'nama') return; 
 
                         adaAntrean = true;
-                        // Pastikan nominal diubah jadi angka dengan aman
                         const nominal = row.c[2] ? Number(row.c[2].v) : 0;
                         const tipe = row.c[3] ? row.c[3].v : '-';
                         
@@ -349,9 +338,6 @@
             });
         });
 
-        // ==========================================
-        // MUAT DATA UTAMA
-        // ==========================================
         function toggleInputManual(selectId, inputId) {
             const select = document.getElementById(selectId);
             const input = document.getElementById(inputId);
@@ -410,7 +396,6 @@
 
                 document.getElementById('selectNama').innerHTML = optionsHTML;
                 document.getElementById('selectNamaAdmin').innerHTML = optionsHTML;
-                
                 document.getElementById('saldoTotalM').innerText = formatRupiah(totalSaldoGlobal);
                 document.getElementById('saldoMasukM').innerText = formatRupiah(totalSaldoGlobal);
             });
@@ -423,10 +408,7 @@
             
             isDonaturUmum = (select.value === 'LAINNYA');
             penggunaAktif = dataGlobal.find(d => d.nama === namaTerpilih);
-            
-            if(!penggunaAktif) {
-                penggunaAktif = { nama: namaTerpilih, bayar: 0 };
-            }
+            if(!penggunaAktif) penggunaAktif = { nama: namaTerpilih, bayar: 0 };
 
             document.getElementById('step1').classList.add('hide');
             document.getElementById('step2').classList.remove('hide');
@@ -545,7 +527,7 @@
                 const teksWA = `Halo Bendahara, saya *${penggunaAktif.nama}* ingin konfirmasi pembayaran ${tipeTagihan}.%0A%0A*Rincian Pembayaran:*%0A${encodeURIComponent(rincian)}%0A%0ABerikut saya lampirkan bukti transfer QRIS. Mohon divalidasi. Terima kasih.`;
                 window.open(`https://wa.me/${noWABendahara}?text=${teksWA}`, '_blank');
                 
-                alert("Terima kasih! Pembayaran Anda telah masuk ke daftar antrean validasi bendahara.");
+                alert("Terima kasih! Donasi Anda telah masuk ke antrean validasi bendahara.");
                 window.location.reload();
             }).catch(() => {
                 alert('Terdapat gangguan koneksi, silakan coba lagi.');
