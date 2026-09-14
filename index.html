@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kas & Donasi</title>
+    <title>Kas & Donasi - Majelis Ta'lim An-Nawiyah & Ikatan Santri Al-Hasanah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -30,9 +30,12 @@
     <nav class="p-6 flex justify-between items-center max-w-2xl mx-auto">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-md">
-                <i class="fa-solid fa-wallet"></i>
+                <i class="fa-solid fa-mosque"></i>
             </div>
-            <h1 class="text-lg font-extrabold text-slate-800 tracking-tight">Kas Bersama</h1>
+            <div>
+                <h1 class="text-sm font-extrabold text-slate-800 tracking-tight leading-tight">An-Nawiyah & Al-Hasanah</h1>
+                <p class="text-[10px] text-slate-500 font-medium">Acara: 2 Januari 2027 / 23 Rajab 1448 H</p>
+            </div>
         </div>
         <button onclick="loginAdmin()" id="btnLogin" class="bg-emerald-100 hover:bg-emerald-200 text-primary text-xs font-bold py-2 px-4 rounded-xl transition-colors shadow-sm">
             <i class="fa-solid fa-lock mr-1"></i> Admin
@@ -67,11 +70,11 @@
                     <div>
                         <div class="relative">
                             <select id="selectNamaAdmin" onchange="toggleInputManual('selectNamaAdmin', 'inputNamaManualAdmin')" class="w-full px-5 py-3 border-2 border-slate-100 rounded-xl focus:outline-none focus:border-primary text-sm font-bold text-slate-700 bg-slate-50 cursor-pointer appearance-none transition-all">
-                                <option value="" disabled selected>Pilih Nama Anggota...</option>
+                                <option value="" disabled selected>Pilih Nama Anggota / Donatur...</option>
                             </select>
                             <i class="fa-solid fa-chevron-down absolute right-5 top-4 text-slate-400"></i>
                         </div>
-                        <input type="text" id="inputNamaManualAdmin" placeholder="Ketik nama donatur baru..." class="hide w-full mt-2 px-5 py-3 border-2 border-slate-100 rounded-xl text-sm font-bold bg-slate-50">
+                        <input type="text" id="inputNamaManualAdmin" placeholder="Ketik nama donatur umum baru..." class="hide w-full mt-2 px-5 py-3 border-2 border-slate-100 rounded-xl text-sm font-bold bg-slate-50">
                     </div>
                     <div class="flex gap-2">
                         <div class="relative flex-1">
@@ -90,19 +93,19 @@
         <div id="pembayaranSection" class="mb-12">
             <div id="step1">
                 <div class="text-center mb-10 mt-4">
-                    <h2 class="text-4xl md:text-5xl font-extrabold text-[#2a3042] mb-4 tracking-tight">Iuran & Donasi</h2>
-                    <p class="text-slate-500 text-sm md:text-base px-4">Silakan pilih nama Anda untuk membayar iuran rutin.<br>Bagi donatur umum atau Hamba Allah, pilih opsi <b>"+ Tambah Nama Baru / Donatur Umum"</b> di paling bawah.</p>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-[#2a3042] mb-3 tracking-tight">Iuran & Donasi Acara</h2>
+                    <p class="text-slate-500 text-xs md:text-sm px-2">Majelis Ta'lim An-Nawiyah & Ikatan Santri Al-Hasanah<br>Pilih nama Anda jika anggota (Iuran Sep s.d. Jan), atau pilih <b>"+ Donatur Umum"</b> bagi penyumbang sukarela.</p>
                 </div>
 
                 <div class="bg-white rounded-[2rem] p-6 md:p-8 shadow-xl shadow-emerald-100/50 border border-slate-50">
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Nama Anggota / Donatur</label>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Status & Nama Pembayar</label>
                     <div class="relative mb-8">
-                        <select id="selectNama" onchange="toggleInputManual('selectNama', 'inputNamaManualAnggota')" class="w-full px-5 py-4 border-2 border-slate-100 rounded-2xl focus:outline-none focus:border-primary text-lg font-bold text-slate-700 bg-slate-50 cursor-pointer appearance-none transition-all">
-                            <option value="" disabled selected>PILIH NAMA ANDA...</option>
+                        <select id="selectNama" onchange="toggleInputManual('selectNama', 'inputNamaManualAnggota')" class="w-full px-5 py-4 border-2 border-slate-100 rounded-2xl focus:outline-none focus:border-primary text-base font-bold text-slate-700 bg-slate-50 cursor-pointer appearance-none transition-all">
+                            <option value="" disabled selected>PILIH NAMA ANDA / DONATUR...</option>
                         </select>
                         <i class="fa-solid fa-chevron-down absolute right-6 top-5 text-slate-400"></i>
                     </div>
-                    <input type="text" id="inputNamaManualAnggota" placeholder="Ketik nama Anda / Hamba Allah..." class="hide w-full mb-8 px-5 py-4 border-2 border-slate-100 rounded-2xl focus:outline-none focus:border-primary text-lg font-bold text-slate-700 bg-slate-50 transition-all">
+                    <input type="text" id="inputNamaManualAnggota" placeholder="Ketik nama lengkap Donatur Umum..." class="hide w-full mb-8 px-5 py-4 border-2 border-slate-100 rounded-2xl focus:outline-none focus:border-primary text-base font-bold text-slate-700 bg-slate-50 transition-all">
                     
                     <button onclick="lanjutkanKeBulan()" class="w-full bg-primary hover:bg-primaryHover text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex justify-center items-center gap-2 text-lg">
                         Lanjutkan <i class="fa-solid fa-arrow-right"></i>
@@ -116,7 +119,7 @@
                         <div class="w-12 h-12 bg-emerald-50 text-primary font-bold text-xl rounded-full flex items-center justify-center" id="userInitial">A</div>
                         <div>
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" id="userRoleDisplay">Anggota</p>
-                            <p class="text-lg font-extrabold text-[#2a3042]" id="userNameDisplay">NAMA ANGGOTA</p>
+                            <p class="text-base font-extrabold text-[#2a3042]" id="userNameDisplay">NAMA</p>
                         </div>
                     </div>
                     <button onclick="kembaliKeStep1()" class="text-primary bg-emerald-50 hover:bg-emerald-100 px-4 py-2 rounded-xl text-sm font-bold transition-colors">Ganti</button>
@@ -125,20 +128,22 @@
                 <div class="flex justify-between items-end mb-6 px-2">
                     <div>
                         <h2 class="text-2xl font-extrabold text-[#2a3042] mb-1" id="judulLangkah2">Tagihan Iuran</h2>
-                        <p class="text-slate-500 text-sm" id="subjudulLangkah2">Ketuk bulan untuk iuran (Rp 100rb/kotak)</p>
+                        <p class="text-slate-500 text-xs md:text-sm" id="subjudulLangkah2">Wajib Iuran Sep s.d. Jan (Rp 100rb/bln)</p>
                     </div>
-                    <div id="periodeLabel" class="bg-white border border-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl shadow-sm text-sm flex items-center gap-2">
-                        Periode 26/27 <i class="fa-solid fa-calendar text-slate-400 text-xs ml-1"></i>
+                    <div id="periodeLabel" class="bg-white border border-slate-200 text-slate-700 font-bold px-3 py-2 rounded-xl shadow-sm text-xs flex items-center gap-1">
+                        <span>Sep '26 - Jan '27</span> <i class="fa-solid fa-calendar text-slate-400 text-xs ml-1"></i>
                     </div>
                 </div>
 
+                <!-- KOTAK BULAN KHUSUS ANGGOTA (Sep s.d Jan) -->
                 <div id="bulanInputContainer" class="bg-white rounded-[2rem] p-6 shadow-xl shadow-emerald-100/50 border border-slate-50 mb-6">
-                    <div class="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-4" id="gridBulan"></div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4" id="gridBulan"></div>
                 </div>
 
+                <!-- KOTAK DONASI KHUSUS DONATUR UMUM -->
                 <div id="donasiInputContainer" class="hide bg-white rounded-[2rem] p-8 shadow-xl shadow-emerald-100/50 border border-slate-50 mb-6 text-center">
                     <h3 class="font-bold text-slate-700 mb-2">Masukkan Nominal Donasi</h3>
-                    <p class="text-xs text-slate-400 mb-6">Berapapun donasi Anda akan sangat bermanfaat.</p>
+                    <p class="text-xs text-slate-400 mb-6">Berapapun donasi Anda sangat membantu kesuksesan acara.</p>
                     <div class="relative max-w-sm mx-auto">
                         <span class="absolute left-6 top-4 text-slate-400 font-bold text-lg">Rp</span>
                         <input type="number" id="inputNominalDonasi" onkeyup="updateTotalDonasi()" onchange="updateTotalDonasi()" placeholder="Seikhlasnya..." class="w-full pl-14 pr-5 py-4 border-2 border-slate-100 rounded-2xl text-xl font-extrabold text-slate-700 bg-slate-50 transition-all">
@@ -163,7 +168,7 @@
         <div id="transparansiSection">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-extrabold text-primary mb-2 tracking-tight">Transparansi Keuangan</h2>
-                <p class="text-slate-500 text-sm">Laporan mutasi uang kas dan donasi secara real-time.</p>
+                <p class="text-slate-500 text-sm">Laporan mutasi iuran anggota & donasi real-time.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
@@ -185,7 +190,7 @@
 
             <div class="bg-white rounded-[2rem] p-6 shadow-xl shadow-emerald-100/50 border border-slate-50">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bold text-slate-700 flex items-center gap-2"><i class="fa-solid fa-clipboard-list text-primary"></i> Tabel Penerimaan</h3>
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2"><i class="fa-solid fa-clipboard-list text-primary"></i> Tabel Rekapitulasi</h3>
                     <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full"><i class="fa-solid fa-rotate mr-1"></i>Live</span>
                 </div>
                 
@@ -245,7 +250,8 @@
         let isDonaturUmum = false;
         let bulanDipilih = [];
 
-        const listNamaBulan = ['SEP', 'OKT', 'NOV', 'DES', 'JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU'];
+        // Iuran wajib khusus persiapan acara dari September s.d. Januari
+        const listNamaBulan = ['SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER', 'JANUARI'];
 
         function loginAdmin() {
             const pin = prompt("Masukkan PIN Keamanan Bendahara:");
@@ -298,7 +304,7 @@
                 }
                 if(!adaAntrean) container.innerHTML = '<p class="text-xs text-slate-400 italic bg-slate-50 p-3 rounded-lg border border-slate-100">Belum ada antrean transfer baru.</p>';
             })
-            .catch(err => {
+            .catch(() => {
                 container.innerHTML = '<p class="text-xs text-slate-400 italic bg-slate-50 p-3 rounded-lg border border-slate-100">Belum ada antrean transfer baru.</p>';
             });
         }
@@ -314,7 +320,7 @@
             fetch(gasUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formBody })
             .then(() => {
                 document.body.style.cursor = 'default';
-                alert(isACC ? `✅ Saldo ${nama} berhasil ditambahkan!` : `🗑️ Antrean ${nama} berhasil dihapus.`);
+                alert(isACC ? `✅ Saldo ${nama} berhasil disetujui & masuk web!` : `🗑️ Antrean ${nama} berhasil dihapus.`);
                 window.location.reload();
             });
         }
@@ -326,7 +332,6 @@
             if(!namaACC || !nominalACC) return alert("Isi form dengan lengkap!");
 
             const btnSubmit = document.getElementById('btnSubmitAdmin');
-            const originalText = btnSubmit.innerHTML;
             btnSubmit.innerHTML = 'Menyimpan...'; btnSubmit.disabled = true;
 
             const formBody = new URLSearchParams({ 'action': 'manual_acc', 'nama': namaACC, 'nominal': nominalACC });
@@ -341,21 +346,21 @@
         function toggleInputManual(selectId, inputId) {
             const select = document.getElementById(selectId);
             const input = document.getElementById(inputId);
-            if (select.value === 'LAINNYA') { input.classList.remove('hide'); input.focus(); } 
+            if (select.value === 'DONATUR_UMUM') { input.classList.remove('hide'); input.focus(); } 
             else { input.classList.add('hide'); input.value = ''; }
         }
 
         function dapatkanNamaAktif(selectId, inputId) {
             const select = document.getElementById(selectId);
             const input = document.getElementById(inputId);
-            return select.value === 'LAINNYA' ? input.value.trim() : select.value;
+            return select.value === 'DONATUR_UMUM' ? input.value.trim() : select.value;
         }
 
         fetch(endpointDataUtama)
             .then(res => res.text())
             .then(text => {
                 const data = JSON.parse(text.substring(47).slice(0, -2));
-                let optionsHTML = '<option value="" disabled selected>Pilih Nama Anda...</option>';
+                let optionsHTML = '<option value="" disabled selected>Pilih Nama Anda / Donatur...</option>';
                 const mutasiContainer = document.getElementById('tabelMutasi');
                 mutasiContainer.innerHTML = '';
                 
@@ -367,20 +372,23 @@
                     const nama = row.c[1].v.toString().toUpperCase();
                     const bayar = row.c[2] ? Number(row.c[2].v) || 0 : 0;
                     
-                    if(!nama.includes('HAMBA') && !nama.includes('UMUM') && !nama.includes('DONATUR')) {
+                    const isDonatur = nama.includes('DONATUR') || nama.includes('UMUM') || nama.includes('HAMBA');
+
+                    if(!isDonatur) {
                         dataGlobal.push({ nama, bayar });
                         if(!daftarNamaUnik.includes(nama)) daftarNamaUnik.push(nama);
                     }
                     totalSaldoGlobal += bayar;
 
-                    let statusHTML = bayar >= (12 * hargaPerBulan) 
-                        ? '<span class="inline-flex items-center bg-emerald-100 text-emerald-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-check mr-1"></i>LUNAS</span>' 
-                        : (bayar > 0 
-                            ? '<span class="inline-flex items-center bg-amber-100 text-amber-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-clock mr-1"></i>CICIL</span>' 
-                            : '<span class="inline-flex items-center bg-rose-100 text-rose-600 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-xmark mr-1"></i>BELUM</span>');
-                    
-                    if (nama.includes('HAMBA') || nama.includes('DONATUR') || nama.includes('UMUM') || !daftarNamaUnik.includes(nama)) {
-                        statusHTML = '<span class="inline-flex items-center bg-blue-100 text-blue-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-heart mr-1"></i>DONASI</span>';
+                    let statusHTML = '';
+                    if (isDonatur) {
+                        statusHTML = '<span class="inline-flex items-center bg-blue-100 text-blue-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-heart mr-1"></i>DONATUR UMUM</span>';
+                    } else {
+                        statusHTML = bayar >= (5 * hargaPerBulan) 
+                            ? '<span class="inline-flex items-center bg-emerald-100 text-emerald-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-check mr-1"></i>LUNAS (5 BULAN)</span>' 
+                            : (bayar > 0 
+                                ? '<span class="inline-flex items-center bg-amber-100 text-amber-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-clock mr-1"></i>CICIL</span>' 
+                                : '<span class="inline-flex items-center bg-rose-100 text-rose-600 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-xmark mr-1"></i>BELUM</span>');
                     }
 
                     mutasiContainer.innerHTML += `
@@ -392,7 +400,7 @@
                 });
 
                 daftarNamaUnik.forEach(n => optionsHTML += `<option value="${n}">${n}</option>`);
-                optionsHTML += '<option value="LAINNYA" class="font-bold text-primary">➕ Tambah Nama Baru / Donatur Umum...</option>';
+                optionsHTML += '<option value="DONATUR_UMUM" class="font-bold text-primary">➕ + Donatur Umum (Sumbangan Sukarela)...</option>';
 
                 document.getElementById('selectNama').innerHTML = optionsHTML;
                 document.getElementById('selectNamaAdmin').innerHTML = optionsHTML;
@@ -406,7 +414,7 @@
             
             if(!namaTerpilih) return alert("Pilih atau ketik nama Anda terlebih dahulu.");
             
-            isDonaturUmum = (select.value === 'LAINNYA');
+            isDonaturUmum = (select.value === 'DONATUR_UMUM');
             penggunaAktif = dataGlobal.find(d => d.nama === namaTerpilih);
             if(!penggunaAktif) penggunaAktif = { nama: namaTerpilih, bayar: 0 };
 
@@ -418,14 +426,14 @@
 
             if(isDonaturUmum) {
                 document.getElementById('judulLangkah2').innerText = "Donasi Sukarela";
-                document.getElementById('subjudulLangkah2').innerText = "Masukkan nominal seikhlasnya";
+                document.getElementById('subjudulLangkah2').innerText = "Masukkan nominal seikhlasnya untuk acara";
                 document.getElementById('periodeLabel').classList.add('hide');
                 document.getElementById('bulanInputContainer').classList.add('hide');
                 document.getElementById('donasiInputContainer').classList.remove('hide');
                 document.getElementById('boxBayar').classList.add('hide');
             } else {
-                document.getElementById('judulLangkah2').innerText = "Tagihan Iuran";
-                document.getElementById('subjudulLangkah2').innerText = "Ketuk bulan untuk iuran (Rp 100rb/kotak)";
+                document.getElementById('judulLangkah2').innerText = "Tagihan Iuran Wajib";
+                document.getElementById('subjudulLangkah2').innerText = "Pilih bulan iuran (Sep '26 s.d. Jan '27)";
                 document.getElementById('periodeLabel').classList.remove('hide');
                 document.getElementById('bulanInputContainer').classList.remove('hide');
                 document.getElementById('donasiInputContainer').classList.add('hide');
@@ -454,8 +462,8 @@
                 let onClickFn = isLunas ? '' : `onclick="toggleBulan('${bulan}')"`;
 
                 grid.innerHTML += `
-                <div ${onClickFn} class="rounded-2xl p-4 flex flex-col items-center justify-center gap-2 h-24 ${btnClass}">
-                    <span class="title font-extrabold text-lg">${bulan}</span>
+                <div ${onClickFn} class="rounded-2xl p-4 flex flex-col items-center justify-center gap-1 h-24 ${btnClass}">
+                    <span class="title font-extrabold text-sm">${bulan}</span>
                     <span class="badge text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">${badgeText}</span>
                 </div>`;
             });
@@ -504,7 +512,7 @@
 
         function konfirmasiWADanAntre() {
             let total = isDonaturUmum ? (parseInt(document.getElementById('inputNominalDonasi').value) || 0) : (bulanDipilih.length * hargaPerBulan);
-            let tipeTagihan = isDonaturUmum ? "Donasi Umum" : "Iuran Bulanan";
+            let tipeTagihan = isDonaturUmum ? "Donasi Umum" : "Iuran Acara";
             let rincian = isDonaturUmum ? `- Nominal: *${formatRupiah(total)}*` : `- Bulan: ${bulanDipilih.join(', ')}\n- Nominal: *${formatRupiah(total)}*`;
 
             const btn = document.getElementById('btnKonfirmasiWA');
@@ -524,10 +532,10 @@
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formBody
             }).then(() => {
-                const teksWA = `Halo Bendahara, saya *${penggunaAktif.nama}* ingin konfirmasi pembayaran ${tipeTagihan}.%0A%0A*Rincian Pembayaran:*%0A${encodeURIComponent(rincian)}%0A%0ABerikut saya lampirkan bukti transfer QRIS. Mohon divalidasi. Terima kasih.`;
+                const teksWA = `Halo Bendahara, saya *${penggunaAktif.nama}* ingin konfirmasi pembayaran ${tipeTagihan} (Acara Majelis Ta'lim An-Nawiyah & Ikatan Santri Al-Hasanah).%0A%0A*Rincian Pembayaran:*%0A${encodeURIComponent(rincian)}%0A%0ABerikut saya lampirkan bukti transfer QRIS. Mohon divalidasi agar tercatat di web. Terima kasih.`;
                 window.open(`https://wa.me/${noWABendahara}?text=${teksWA}`, '_blank');
                 
-                alert("Terima kasih! Donasi Anda telah masuk ke antrean validasi bendahara.");
+                alert("Terima kasih! Data pembayaran Anda telah masuk antrean validasi bendahara.");
                 window.location.reload();
             }).catch(() => {
                 alert('Terdapat gangguan koneksi, silakan coba lagi.');
