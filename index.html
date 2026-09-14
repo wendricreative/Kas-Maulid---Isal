@@ -13,8 +13,8 @@
                 extend: {
                     fontFamily: { sans: ['Poppins', 'sans-serif'] },
                     colors: {
-                        primary: '#059669', // Emerald 600
-                        primaryHover: '#047857', // Emerald 700
+                        primary: '#059669',
+                        primaryHover: '#047857',
                     }
                 }
             }
@@ -40,7 +40,6 @@
 </head>
 <body class="font-sans text-slate-800 pb-12 antialiased">
 
-    <!-- NAVBAR LOGO & TOMBOL ADMIN -->
     <nav class="p-6 flex justify-between items-center max-w-2xl mx-auto">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-md">
@@ -55,7 +54,7 @@
 
     <main class="container mx-auto px-4 max-w-2xl mt-2">
         
-        <!-- FITUR ADMIN: ACC SALDO (Tersembunyi secara default) -->
+        <!-- FITUR ADMIN -->
         <div id="adminSection" class="hide bg-white rounded-[2rem] p-6 mb-8 border-t-4 border-primary relative overflow-hidden shadow-xl">
             <div class="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-4 py-1.5 rounded-bl-2xl uppercase tracking-wider">Mode Bendahara</div>
             <h2 class="text-xl font-bold text-slate-800 mb-6 mt-2 flex items-center"><i class="fa-solid fa-user-check text-primary mr-3 text-2xl"></i>ACC Saldo Masuk</h2>
@@ -88,11 +87,8 @@
             </form>
         </div>
 
-        <!-- =========================================
-             BAGIAN 1: PEMBAYARAN IURAN
-             ========================================= -->
+        <!-- PEMBAYARAN IURAN -->
         <div id="pembayaranSection" class="mb-12">
-            <!-- STEP 1: PILIH NAMA -->
             <div id="step1">
                 <div class="text-center mb-10 mt-4">
                     <h2 class="text-4xl md:text-5xl font-extrabold text-[#2a3042] mb-4 tracking-tight">Bayar Iuran</h2>
@@ -114,7 +110,6 @@
                 </div>
             </div>
 
-            <!-- STEP 2: PILIH BULAN -->
             <div id="step2" class="hide mt-4">
                 <div class="flex items-center justify-between bg-white rounded-2xl p-4 mb-8 shadow-sm border border-slate-100">
                     <div class="flex items-center gap-4">
@@ -132,8 +127,9 @@
                         <h2 class="text-2xl font-extrabold text-[#2a3042] mb-1">Tagihan Iuran</h2>
                         <p class="text-slate-500 text-sm">Ketuk bulan yang ingin dibayar</p>
                     </div>
+                    <!-- Label periode diubah di sini -->
                     <div class="bg-white border border-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl shadow-sm text-sm flex items-center gap-2">
-                        Tahun 2026 <i class="fa-solid fa-chevron-down text-slate-400 text-xs"></i>
+                        Periode 26/27 <i class="fa-solid fa-calendar text-slate-400 text-xs ml-1"></i>
                     </div>
                 </div>
 
@@ -155,16 +151,13 @@
 
         <hr class="border-slate-200 border-2 rounded-full mb-12">
 
-        <!-- =========================================
-             BAGIAN 2: TRANSPARANSI KAS
-             ========================================= -->
+        <!-- TRANSPARANSI KAS -->
         <div id="transparansiSection">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-extrabold text-primary mb-2 tracking-tight">Transparansi Keuangan</h2>
                 <p class="text-slate-500 text-sm">Laporan mutasi uang kas secara real-time.</p>
             </div>
 
-            <!-- Kartu Saldo -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 <div class="bg-primary rounded-3xl p-6 text-white shadow-lg shadow-primary/40 flex flex-col justify-center text-center">
                     <p class="text-xs font-bold text-emerald-200 uppercase tracking-wider mb-2">Total Saldo Kas</p>
@@ -182,7 +175,6 @@
                 </div>
             </div>
 
-            <!-- Tabel Riwayat Pembayaran -->
             <div class="bg-white rounded-[2rem] p-6 shadow-xl shadow-emerald-100/50 border border-slate-50">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="font-bold text-slate-700 flex items-center gap-2"><i class="fa-solid fa-clipboard-list text-primary"></i> Tabel Pembayaran</h3>
@@ -218,7 +210,6 @@
             <div class="p-6 text-center">
                 <p class="text-sm text-slate-500 mb-4">Silakan scan QRIS di bawah sejumlah <b><span id="modalTotal" class="text-slate-800 font-bold"></span></b>.</p>
                 <div class="inline-block border-2 border-slate-100 p-2 rounded-2xl mb-6 shadow-sm">
-                    <!-- GANTI NAMA FILE GAMBAR QRIS DI SINI -->
                     <img src="qris.jpg" alt="QRIS" class="w-48 h-48 rounded-xl object-cover">
                 </div>
                 <button onclick="konfirmasiWA()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 rounded-xl transition-all flex justify-center items-center gap-2 shadow-lg shadow-[#25D366]/30">
@@ -229,13 +220,8 @@
     </div>
 
     <script>
-        // ==========================================
-        // KONFIGURASI 
-        // ==========================================
         const sheetId = '16bc8UiTpSYewlUsYszIOoGadHWztTsdN6ERtLey7Htw';
         const endpoint = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
-        
-        // SCRIPT GOOGLE UNTUK UPDATE SALDO
         const gasUrl = 'https://script.google.com/macros/s/AKfycbz_xNr20ZLOIAIf3GkMkPhgKjHp0GSnooX1zDgXHLv3EleTM5rgxLn6ybGbFGUdiseQ/exec';
         
         const noWABendahara = '6289699651535'; 
@@ -248,11 +234,10 @@
         let totalSaldoGlobal = 0;
         let penggunaAktif = null;
         let bulanDipilih = [];
-        const listNamaBulan = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
 
-        // ==========================================
-        // FITUR LOGIN ADMIN (ACC SALDO)
-        // ==========================================
+        // URUTAN BULAN DIUBAH MULAI DARI SEPTEMBER
+        const listNamaBulan = ['SEP', 'OKT', 'NOV', 'DES', 'JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU'];
+
         function loginAdmin() {
             const pin = prompt("Masukkan PIN Keamanan Bendahara:");
             if (pin === PIN_BENDAHARA) {
@@ -314,14 +299,11 @@
             });
         });
 
-        // ==========================================
-        // FETCH GOOGLE SHEETS
-        // ==========================================
         fetch(endpoint)
             .then(res => res.text())
             .then(text => {
                 const data = JSON.parse(text.substring(47).slice(0, -2));
-                let optionsHTML = '<option value="" disabled selected>PILIH NAMA...</option>';
+                let optionsHTML = '<option value="" disabled selected>Pilih Nama...</option>';
                 const mutasiContainer = document.getElementById('tabelMutasi');
                 mutasiContainer.innerHTML = '';
                 
@@ -339,8 +321,7 @@
                     }
                     totalSaldoGlobal += bayar;
 
-                    // Buat Tabel Laporan Transparansi (Semua masuk tabel)
-                    let statusHTML = bayar >= (12 * hargaPerBulan) // Asumsi lunas 12 bulan
+                    let statusHTML = bayar >= (12 * hargaPerBulan) 
                         ? '<span class="inline-flex items-center bg-emerald-100 text-emerald-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-check mr-1"></i>LUNAS</span>' 
                         : (bayar > 0 
                             ? '<span class="inline-flex items-center bg-amber-100 text-amber-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-clock mr-1"></i>CICIL</span>' 
@@ -368,9 +349,6 @@
                 document.getElementById('saldoMasukM').innerText = formatRupiah(totalSaldoGlobal);
             });
 
-        // ==========================================
-        // LOGIKA PEMBAYARAN IURAN
-        // ==========================================
         function lanjutkanKeBulan() {
             const namaTerpilih = dapatkanNamaAktif('selectNama', 'selectNama');
             if(!namaTerpilih) return alert("Pilih nama Anda terlebih dahulu.");
@@ -440,9 +418,6 @@
             }
         }
 
-        // ==========================================
-        // MODAL & WA
-        // ==========================================
         function bukaModalQRIS() {
             const modal = document.getElementById('modalQRIS');
             const content = document.getElementById('modalContent');
