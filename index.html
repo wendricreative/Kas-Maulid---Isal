@@ -23,6 +23,12 @@
         .bulan-pilih { background-color: #fffbeb; border: 1px solid #fef3c7; cursor: pointer; }
         .bulan-pilih .badge { background-color: #fef3c7; color: #d97706; }
         .bulan-pilih .title { color: #d97706; }
+        
+        /* Fitur Slider Transaksi Terkini */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes pulse-ring { 0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        .live-indicator { animation: pulse-ring 2s infinite; }
     </style>
 </head>
 <body class="font-sans text-slate-800 pb-12 antialiased">
@@ -33,7 +39,7 @@
                 <i class="fa-solid fa-mosque"></i>
             </div>
             <div>
-                <h1 class="text-sm font-extrabold text-slate-800 tracking-tight leading-tight">An-Nawiyah & Ikatan Santri Al-Hasanah</h1>
+                <h1 class="text-sm font-extrabold text-slate-800 tracking-tight leading-tight">An-Nawiyah & Al-Hasanah</h1>
                 <p class="text-[10px] text-slate-500 font-medium">Acara: 2 Januari 2027 / 23 Rajab 1448 H</p>
             </div>
         </div>
@@ -52,7 +58,6 @@
                 <button onclick="logoutAdmin()" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold py-2 px-4 rounded-xl text-sm transition-all"><i class="fa-solid fa-xmark"></i> Tutup</button>
             </div>
 
-            <!-- ANTREAN PENDING -->
             <div class="mb-8">
                 <h3 class="text-sm font-bold text-slate-700 mb-3 border-b border-slate-100 pb-2 flex justify-between">
                     <span>Antrean Transfer Baru (Menunggu ACC)</span>
@@ -63,7 +68,6 @@
                 </div>
             </div>
 
-            <!-- FORM MANUAL -->
             <div>
                 <h3 class="text-sm font-bold text-slate-700 mb-3 border-b border-slate-100 pb-2">ACC / Tambah Saldo Manual</h3>
                 <form id="formUpdateManual" class="space-y-4">
@@ -135,12 +139,10 @@
                     </div>
                 </div>
 
-                <!-- KOTAK BULAN KHUSUS ANGGOTA (Sep s.d Jan) -->
                 <div id="bulanInputContainer" class="bg-white rounded-[2rem] p-6 shadow-xl shadow-emerald-100/50 border border-slate-50 mb-6">
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4" id="gridBulan"></div>
                 </div>
 
-                <!-- KOTAK DONASI KHUSUS DONATUR UMUM -->
                 <div id="donasiInputContainer" class="hide bg-white rounded-[2rem] p-8 shadow-xl shadow-emerald-100/50 border border-slate-50 mb-6 text-center">
                     <h3 class="font-bold text-slate-700 mb-2">Masukkan Nominal Donasi</h3>
                     <p class="text-xs text-slate-400 mb-6">Berapapun donasi Anda sangat membantu kesuksesan acara.</p>
@@ -164,17 +166,18 @@
 
         <hr class="border-slate-200 border-2 rounded-full mb-12">
 
-        <!-- TRANSPARANSI KAS -->
+        <!-- TRANSPARANSI KAS & TRANSAKSI TERKINI -->
         <div id="transparansiSection">
             <div class="text-center mb-8">
-                <h2 class="text-3xl font-extrabold text-primary mb-2 tracking-tight">Transparansi Keuangan</h2>
-                <p class="text-slate-500 text-sm">Laporan mutasi iuran anggota & donasi real-time.</p>
+                <h2 class="text-3xl font-extrabold text-primary mb-2 tracking-tight">Transparansi Dana</h2>
+                <p class="text-slate-500 text-sm">Laporan mutasi iuran anggota & donasi secara real-time.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                <div class="bg-primary rounded-3xl p-6 text-white shadow-lg shadow-primary/40 flex flex-col justify-center text-center">
+                <div class="bg-primary rounded-3xl p-6 text-white shadow-lg shadow-primary/40 flex flex-col justify-center text-center relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-white opacity-10 rounded-full blur-2xl"></div>
                     <p class="text-xs font-bold text-emerald-200 uppercase tracking-wider mb-2">Total Dana Terkumpul</p>
-                    <h3 class="text-3xl font-extrabold" id="saldoTotalM">Rp 0</h3>
+                    <h3 class="text-4xl font-extrabold tracking-tight" id="saldoTotalM">Rp 0</h3>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm flex flex-col justify-center text-center">
@@ -188,18 +191,33 @@
                 </div>
             </div>
 
+            <!-- FITUR BARU: TRANSAKSI TERKINI / RECENT DONATIONS -->
+            <div class="mb-8 relative">
+                <div class="flex justify-between items-end mb-3">
+                    <h3 class="text-sm font-bold text-slate-600 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full live-indicator inline-block"></span> 
+                        Baru Saja Masuk
+                    </h3>
+                    <span class="text-[10px] bg-emerald-50 text-emerald-600 font-bold px-2 py-1 rounded-md">Live Update</span>
+                </div>
+                <div class="flex overflow-x-auto gap-3 pb-2 snap-x hide-scrollbar" id="recentTransactions">
+                    <!-- Data transaksi terkini akan dimasukkan oleh JavaScript -->
+                    <div class="text-xs text-slate-400 italic py-4 px-2"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Memuat transaksi...</div>
+                </div>
+            </div>
+
             <div class="bg-white rounded-[2rem] p-6 shadow-xl shadow-emerald-100/50 border border-slate-50">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="font-bold text-slate-700 flex items-center gap-2"><i class="fa-solid fa-clipboard-list text-primary"></i> Tabel Rekapitulasi</h3>
-                    <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full"><i class="fa-solid fa-rotate mr-1"></i>Live</span>
+                    <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full"><i class="fa-solid fa-rotate mr-1"></i>Otomatis</span>
                 </div>
                 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead>
                             <tr class="bg-slate-50 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
-                                <th class="p-4 font-semibold rounded-tl-xl">Nama / Donatur</th>
-                                <th class="p-4 font-semibold">Telah Bayar</th>
+                                <th class="p-4 font-semibold rounded-tl-xl whitespace-nowrap">Nama / Donatur</th>
+                                <th class="p-4 font-semibold whitespace-nowrap">Telah Bayar</th>
                                 <th class="p-4 font-semibold text-center rounded-tr-xl">Status</th>
                             </tr>
                         </thead>
@@ -250,7 +268,6 @@
         let isDonaturUmum = false;
         let bulanDipilih = [];
 
-        // Iuran wajib khusus persiapan acara dari September s.d. Januari
         const listNamaBulan = ['SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER', 'JANUARI'];
 
         function loginAdmin() {
@@ -361,16 +378,24 @@
             .then(text => {
                 const data = JSON.parse(text.substring(47).slice(0, -2));
                 let optionsHTML = '<option value="" disabled selected>Pilih Nama Anda / Donatur...</option>';
+                
                 const mutasiContainer = document.getElementById('tabelMutasi');
+                const recentContainer = document.getElementById('recentTransactions');
+                
                 mutasiContainer.innerHTML = '';
+                recentContainer.innerHTML = '';
                 
                 let daftarNamaUnik = [];
+                let validRows = [];
 
+                // Filter & kumpulkan baris data yang valid (memiliki angka nominal)
                 data.table.rows.forEach((row) => {
                     if (!row.c || !row.c[1] || !row.c[1].v || row.c[1].v.toString().includes('TOTAL')) return;
                     
                     const nama = row.c[1].v.toString().toUpperCase();
                     const bayar = row.c[2] ? Number(row.c[2].v) || 0 : 0;
+                    
+                    if (bayar > 0) validRows.push({ nama, bayar }); // Simpan yang nominalnya > 0 untuk fitur "Baru Masuk"
                     
                     const isDonatur = nama.includes('DONATUR') || nama.includes('UMUM') || nama.includes('HAMBA');
 
@@ -385,7 +410,7 @@
                         statusHTML = '<span class="inline-flex items-center bg-blue-100 text-blue-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-heart mr-1"></i>DONATUR UMUM</span>';
                     } else {
                         statusHTML = bayar >= (5 * hargaPerBulan) 
-                            ? '<span class="inline-flex items-center bg-emerald-100 text-emerald-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-check mr-1"></i>LUNAS (5 BULAN)</span>' 
+                            ? '<span class="inline-flex items-center bg-emerald-100 text-emerald-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-check mr-1"></i>LUNAS (5 BLN)</span>' 
                             : (bayar > 0 
                                 ? '<span class="inline-flex items-center bg-amber-100 text-amber-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-clock mr-1"></i>CICIL</span>' 
                                 : '<span class="inline-flex items-center bg-rose-100 text-rose-600 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-xmark mr-1"></i>BELUM</span>');
@@ -393,12 +418,43 @@
 
                     mutasiContainer.innerHTML += `
                         <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="p-4 font-semibold text-slate-700">${nama}</td>
-                            <td class="p-4 text-emerald-600 font-bold">${formatRupiah(bayar)}</td>
+                            <td class="p-4 font-semibold text-slate-700 whitespace-nowrap">${nama}</td>
+                            <td class="p-4 text-emerald-600 font-bold whitespace-nowrap">${formatRupiah(bayar)}</td>
                             <td class="p-4 text-center">${statusHTML}</td>
                         </tr>`;
                 });
 
+                /* 
+                 * FITUR TRANSAKSI TERKINI (Slider Live Update)
+                 * Mengambil 6 data terbawah di spreadsheet (diasumsikan sebagai data terbaru yang baru diinput admin)
+                 */
+                const recentData = validRows.slice(-6).reverse(); // Ambil 6 terakhir, balikkan urutan (paling baru di depan)
+                
+                if (recentData.length > 0) {
+                    recentData.forEach((item) => {
+                        const isDonatur = item.nama.includes('DONATUR') || item.nama.includes('UMUM') || item.nama.includes('HAMBA');
+                        const icon = isDonatur ? '<i class="fa-solid fa-heart text-rose-500"></i>' : '<i class="fa-solid fa-check-circle text-emerald-500"></i>';
+                        const colorBg = isDonatur ? 'bg-rose-50' : 'bg-emerald-50';
+                        const label = isDonatur ? 'Donatur Umum' : 'Iuran Anggota';
+                        
+                        recentContainer.innerHTML += `
+                            <div class="snap-start shrink-0 bg-white border border-slate-100 rounded-2xl p-3 shadow-sm flex items-center gap-3 min-w-[220px]">
+                                <div class="w-10 h-10 rounded-full ${colorBg} flex items-center justify-center text-lg shrink-0">
+                                    ${icon}
+                                </div>
+                                <div class="overflow-hidden">
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">${label}</p>
+                                    <p class="text-sm font-extrabold text-slate-700 truncate w-32" title="${item.nama}">${item.nama}</p>
+                                    <p class="text-xs font-bold text-primary mt-0.5">${formatRupiah(item.bayar)}</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    recentContainer.innerHTML = '<p class="text-xs text-slate-400 italic">Belum ada transaksi.</p>';
+                }
+
+                // Pengisian Dropdown Option Pilihan Nama
                 daftarNamaUnik.forEach(n => optionsHTML += `<option value="${n}">${n}</option>`);
                 optionsHTML += '<option value="DONATUR_UMUM" class="font-bold text-primary">➕ + Donatur Umum (Sumbangan Sukarela)...</option>';
 
