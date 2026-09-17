@@ -551,13 +551,34 @@
 
         function konfirmasiWADanAntre() {
             let total = isDonaturUmum ? (parseInt(document.getElementById('inputNominalDonasi').value) || 0) : (bulanDipilih.length * hargaPerBulan);
-            let t = isDonaturUmum ? "Donasi Umum" : "Iuran Acara"; let r = isDonaturUmum ? `- Nominal: *${formatRupiah(total)}*` : `- Bulan: ${bulanDipilih.join(', ')}\n- Nominal: *${formatRupiah(total)}*`;
-            const btn = document.getElementById('btnKonfirmasiWA'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengirim Data...'; btn.disabled = true;
+            let t = isDonaturUmum ? "Donasi Umum" : "Iuran Acara"; 
+            let r = isDonaturUmum ? `- Nominal: *${formatRupiah(total)}*` : `- Bulan: ${bulanDipilih.join(', ')}\n- Nominal: *${formatRupiah(total)}*`;
+            
+            const btn = document.getElementById('btnKonfirmasiWA'); 
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengirim Data...'; 
+            btn.disabled = true;
 
-            fetch(gasUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ 'action': 'tambah_pending', 'nama': penggunaAktif.nama, 'nominal': total, 'tipe': t }) }).then(() => {
-                window.open(`https://wa.me/${noWABendahara}?text=${encodeURIComponent(`Halo Bendahara, saya *${penggunaAktif.nama}* ingin konfirmasi pembayaran ${t}.%0A%0A*Rincian:*%0A${r}%0A%0ATerlampir bukti transfer. Terima kasih.`)}`, '_blank');
-                alert("Data masuk antrean admin!"); window.location.reload();
-            }).catch(() => { alert('Koneksi terganggu.'); btn.innerHTML = '<i class="fa-brands fa-whatsapp text-xl"></i> Konfirmasi via WhatsApp'; btn.disabled = false; });
+            // 1. SIAPKAN LINK WA
+            const pesanWA = `Halo Bendahara, saya *${penggunaAktif.nama}* ingin konfirmasi pembayaran ${t}.%0A%0A*Rincian:*%0A${r}%0A%0ATerlampir bukti transfer. Terima kasih.`;
+            const linkWA = `https://wa.me/${noWABendahara}?text=${pesanWA}`;
+
+            // 2. BUKA WA SECARA LANGSUNG (Mencegah Pop-up Blocker)
+            window.open(linkWA, '_blank');
+
+            // 3. KIRIM DATA KE GOOGLE SHEETS DI BACKGROUND
+            fetch(gasUrl, { 
+                method: 'POST', 
+                mode: 'no-cors', 
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, 
+                body: new URLSearchParams({ 'action': 'tambah_pending', 'nama': penggunaAktif.nama, 'nominal': total, 'tipe': t }) 
+            }).then(() => {
+                alert("Berhasil! Konfirmasi WA telah dibuka dan data Anda masuk ke antrean validasi Admin."); 
+                window.location.reload();
+            }).catch(() => { 
+                alert('Pesan WA berhasil dibuat, tetapi sistem gagal mencatat antrean karena koneksi. Silakan kirimkan bukti transfer Anda secara manual di chat WA.'); 
+                btn.innerHTML = '<i class="fa-brands fa-whatsapp text-xl"></i> Konfirmasi via WhatsApp'; 
+                btn.disabled = false; 
+            });
         }
     </script>
 </body>
