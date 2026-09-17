@@ -24,7 +24,6 @@
         .bulan-pilih .badge { background-color: #fef3c7; color: #d97706; }
         .bulan-pilih .title { color: #d97706; }
         
-        /* Fitur Slider Transaksi Terkini */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         @keyframes pulse-ring { 0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
@@ -33,13 +32,13 @@
 </head>
 <body class="font-sans text-slate-800 pb-12 antialiased">
 
-    <nav class="p-6 flex justify-between items-center max-w-2xl mx-auto">
+    <nav class="p-6 flex justify-between items-center max-w-4xl mx-auto">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-md">
                 <i class="fa-solid fa-mosque"></i>
             </div>
             <div>
-                <h1 class="text-sm font-extrabold text-slate-800 tracking-tight leading-tight">MT AN-NAWIYAH & AL-ISAL</h1>
+                <h1 class="text-sm font-extrabold text-slate-800 tracking-tight leading-tight">An-Nawiyah & Al-Hasanah</h1>
                 <p class="text-[10px] text-slate-500 font-medium">Acara: 2 Januari 2027 / 23 Rajab 1448 H</p>
             </div>
         </div>
@@ -48,34 +47,17 @@
         </button>
     </nav>
 
-    <main class="container mx-auto px-4 max-w-2xl mt-2">
+    <main class="container mx-auto px-4 max-w-4xl mt-2">
         
         <!-- FITUR ADMIN -->
-        <div id="adminSection" class="hide bg-white rounded-[2rem] p-6 md:p-8 mb-8 border-t-4 border-primary relative overflow-hidden shadow-2xl">
-            <!-- FORM PENGELUARAN -->
-            <div class="mt-8 border-t border-slate-100 pt-6">
-                <h3 class="text-sm font-bold text-slate-700 mb-3 pb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-right-from-bracket text-rose-500"></i> Catat Pengeluaran Dana
-                </h3>
-                <form id="formPengeluaran" class="space-y-4">
-                    <input type="text" id="inputDeskripsiPengeluaran" placeholder="Deskripsi (contoh: Beli Tenda, Konsumsi...)" class="w-full px-5 py-3 border-2 border-slate-100 rounded-xl text-sm font-bold bg-slate-50 focus:border-rose-500 focus:outline-none transition-all" required>
-                    <div class="flex gap-2">
-                        <div class="relative flex-1">
-                            <span class="absolute left-4 top-3.5 text-slate-400 font-bold text-sm">Rp</span>
-                            <input type="number" id="inputNominalPengeluaran" placeholder="Nominal Keluar" class="w-full pl-10 pr-4 py-3 border-2 border-slate-100 rounded-xl focus:outline-none focus:border-rose-500 text-sm font-bold bg-slate-50 transition-all" required>
-                        </div>
-                        <button type="submit" id="btnSubmitPengeluaran" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md">
-                            Simpan Pengeluaran
-                        </button>
-                    </div>
-                </form>
-            </div>
+        <div id="adminSection" class="hide bg-white rounded-[2rem] p-6 md:p-8 mb-8 border-t-4 border-primary relative overflow-hidden shadow-2xl max-w-2xl mx-auto">
             <div class="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-4 py-1.5 rounded-bl-2xl uppercase tracking-wider">Mode Bendahara</div>
             <div class="flex justify-between items-center mb-6 mt-2">
-                <h2 class="text-xl font-bold text-slate-800 flex items-center"><i class="fa-solid fa-user-check text-primary mr-3 text-2xl"></i>Validasi Transfer</h2>
+                <h2 class="text-xl font-bold text-slate-800 flex items-center"><i class="fa-solid fa-user-check text-primary mr-3 text-2xl"></i>Panel Admin</h2>
                 <button onclick="logoutAdmin()" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold py-2 px-4 rounded-xl text-sm transition-all"><i class="fa-solid fa-xmark"></i> Tutup</button>
             </div>
 
+            <!-- ANTREAN PENDING -->
             <div class="mb-8">
                 <h3 class="text-sm font-bold text-slate-700 mb-3 border-b border-slate-100 pb-2 flex justify-between">
                     <span>Antrean Transfer Baru (Menunggu ACC)</span>
@@ -86,6 +68,7 @@
                 </div>
             </div>
 
+            <!-- FORM MANUAL PEMASUKAN -->
             <div>
                 <h3 class="text-sm font-bold text-slate-700 mb-3 border-b border-slate-100 pb-2">ACC / Tambah Saldo Manual</h3>
                 <form id="formUpdateManual" class="space-y-4">
@@ -104,7 +87,26 @@
                             <input type="number" id="inputNominalAdmin" placeholder="Nominal" class="w-full pl-10 pr-4 py-3 border-2 border-slate-100 rounded-xl focus:outline-none focus:border-primary text-sm font-bold bg-slate-50">
                         </div>
                         <button type="submit" id="btnSubmitAdmin" class="bg-primary hover:bg-primaryHover text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md">
-                            Simpan Manual
+                            Simpan Masuk
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- FORM PENGELUARAN (BARU) -->
+            <div class="mt-8 border-t border-slate-100 pt-6">
+                <h3 class="text-sm font-bold text-slate-700 mb-3 pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-right-from-bracket text-rose-500"></i> Catat Pengeluaran Dana
+                </h3>
+                <form id="formPengeluaran" class="space-y-4">
+                    <input type="text" id="inputDeskripsiPengeluaran" placeholder="Deskripsi (contoh: Beli Air Mineral...)" class="w-full px-5 py-3 border-2 border-slate-100 rounded-xl text-sm font-bold bg-slate-50 focus:border-rose-500 focus:outline-none transition-all" required>
+                    <div class="flex gap-2">
+                        <div class="relative flex-1">
+                            <span class="absolute left-4 top-3.5 text-slate-400 font-bold text-sm">Rp</span>
+                            <input type="number" id="inputNominalPengeluaran" placeholder="Nominal Keluar" class="w-full pl-10 pr-4 py-3 border-2 border-slate-100 rounded-xl focus:outline-none focus:border-rose-500 text-sm font-bold bg-slate-50 transition-all" required>
+                        </div>
+                        <button type="submit" id="btnSubmitPengeluaran" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md">
+                            Simpan Keluar
                         </button>
                     </div>
                 </form>
@@ -112,7 +114,7 @@
         </div>
 
         <!-- FORM UTAMA -->
-        <div id="pembayaranSection" class="mb-12">
+        <div id="pembayaranSection" class="mb-12 max-w-2xl mx-auto">
             <div id="step1">
                 <div class="text-center mb-10 mt-4">
                     <h2 class="text-3xl md:text-4xl font-extrabold text-[#2a3042] mb-3 tracking-tight">Iuran & Donasi Acara</h2>
@@ -182,20 +184,21 @@
             </div>
         </div>
 
-        <hr class="border-slate-200 border-2 rounded-full mb-12">
+        <hr class="border-slate-200 border-2 rounded-full mb-12 max-w-2xl mx-auto">
 
         <!-- TRANSPARANSI KAS & TRANSAKSI TERKINI -->
         <div id="transparansiSection">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-extrabold text-primary mb-2 tracking-tight">Transparansi Dana</h2>
-                <p class="text-slate-500 text-sm">Laporan mutasi iuran anggota & donasi secara real-time.</p>
+                <p class="text-slate-500 text-sm">Laporan mutasi iuran anggota, donasi, & pengeluaran real-time.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <!-- KOTAK SALDO GLOBAL -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 max-w-3xl mx-auto">
                 <div class="bg-primary rounded-3xl p-6 text-white shadow-lg shadow-primary/40 flex flex-col justify-center text-center relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 w-24 h-24 bg-white opacity-10 rounded-full blur-2xl"></div>
-                    <p class="text-xs font-bold text-emerald-200 uppercase tracking-wider mb-2">Total Dana Terkumpul</p>
-                    <h3 class="text-4xl font-extrabold tracking-tight" id="saldoTotalM">Rp 0</h3>
+                    <p class="text-xs font-bold text-emerald-200 uppercase tracking-wider mb-2">Total Dana Sisa (Tersedia)</p>
+                    <h3 class="text-4xl font-extrabold tracking-tight" id="saldoTotalM"><i class="fa-solid fa-spinner fa-spin"></i></h3>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm flex flex-col justify-center text-center">
@@ -209,8 +212,8 @@
                 </div>
             </div>
 
-            <!-- FITUR BARU: TRANSAKSI TERKINI / RECENT DONATIONS -->
-            <div class="mb-8 relative">
+            <!-- FITUR TRANSAKSI TERKINI (Slider Pemasukan) -->
+            <div class="mb-8 relative max-w-3xl mx-auto">
                 <div class="flex justify-between items-end mb-3">
                     <h3 class="text-sm font-bold text-slate-600 flex items-center gap-2">
                         <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full live-indicator inline-block"></span> 
@@ -219,32 +222,59 @@
                     <span class="text-[10px] bg-emerald-50 text-emerald-600 font-bold px-2 py-1 rounded-md">Live Update</span>
                 </div>
                 <div class="flex overflow-x-auto gap-3 pb-2 snap-x hide-scrollbar" id="recentTransactions">
-                    <!-- Data transaksi terkini akan dimasukkan oleh JavaScript -->
                     <div class="text-xs text-slate-400 italic py-4 px-2"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Memuat transaksi...</div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-[2rem] p-6 shadow-xl shadow-emerald-100/50 border border-slate-50">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bold text-slate-700 flex items-center gap-2"><i class="fa-solid fa-clipboard-list text-primary"></i> Tabel Rekapitulasi</h3>
-                    <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full"><i class="fa-solid fa-rotate mr-1"></i>Otomatis</span>
+            <!-- TABEL DUA KOLOM: PEMASUKAN vs PENGELUARAN -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- TABEL PEMASUKAN -->
+                <div class="bg-white rounded-[2rem] p-6 shadow-xl shadow-emerald-100/50 border border-slate-50">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-slate-700 flex items-center gap-2"><i class="fa-solid fa-clipboard-list text-primary"></i> Rekap Pemasukan</h3>
+                        <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full"><i class="fa-solid fa-rotate mr-1"></i>Otomatis</span>
+                    </div>
+                    
+                    <div class="overflow-x-auto max-h-96 hide-scrollbar">
+                        <table class="w-full text-left">
+                            <thead class="sticky top-0 bg-white">
+                                <tr class="bg-slate-50 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
+                                    <th class="p-4 font-semibold rounded-tl-xl whitespace-nowrap">Nama / Donatur</th>
+                                    <th class="p-4 font-semibold whitespace-nowrap">Telah Bayar</th>
+                                    <th class="p-4 font-semibold text-center rounded-tr-xl">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelMutasi" class="text-sm divide-y divide-slate-50">
+                                <tr><td colspan="3" class="text-center p-8 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Memuat data terbaru...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr class="bg-slate-50 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
-                                <th class="p-4 font-semibold rounded-tl-xl whitespace-nowrap">Nama / Donatur</th>
-                                <th class="p-4 font-semibold whitespace-nowrap">Telah Bayar</th>
-                                <th class="p-4 font-semibold text-center rounded-tr-xl">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabelMutasi" class="text-sm divide-y divide-slate-50">
-                            <tr><td colspan="3" class="text-center p-8 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Memuat data terbaru...</td></tr>
-                        </tbody>
-                    </table>
+
+                <!-- TABEL PENGELUARAN -->
+                <div class="bg-white rounded-[2rem] p-6 shadow-xl shadow-rose-100/50 border border-slate-50">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-slate-700 flex items-center gap-2"><i class="fa-solid fa-receipt text-rose-500"></i> Riwayat Pengeluaran</h3>
+                        <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full"><i class="fa-solid fa-rotate mr-1"></i>Otomatis</span>
+                    </div>
+                    
+                    <div class="overflow-x-auto max-h-96 hide-scrollbar">
+                        <table class="w-full text-left">
+                            <thead class="sticky top-0 bg-white">
+                                <tr class="bg-slate-50 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
+                                    <th class="p-4 font-semibold rounded-tl-xl whitespace-nowrap">Tanggal</th>
+                                    <th class="p-4 font-semibold whitespace-nowrap">Deskripsi</th>
+                                    <th class="p-4 font-semibold text-right rounded-tr-xl whitespace-nowrap">Nominal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelPengeluaran" class="text-sm divide-y divide-slate-50">
+                                <tr><td colspan="3" class="text-center p-8 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Memuat riwayat pengeluaran...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
         </div>
     </main>
 
@@ -271,6 +301,7 @@
         const sheetId = '16bc8UiTpSYewlUsYszIOoGadHWztTsdN6ERtLey7Htw';
         const endpointDataUtama = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
         const endpointPending = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Pending`;
+        const endpointPengeluaran = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Pengeluaran`;
 
         const gasUrl = 'https://script.google.com/macros/s/AKfycbw5tQR9_D13mHbVBZjb0BHJur1Uw5qoAsbrBKju5ENR1a68Pttyk12UtQilvyFUn1C_/exec';
         
@@ -281,22 +312,42 @@
         const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
         
         let dataGlobal = [];
-        let totalSaldoGlobal = 0;
+        let totalPemasukanGlobal = 0;
+        let totalPengeluaranGlobal = 0;
         let penggunaAktif = null;
         let isDonaturUmum = false;
         let bulanDipilih = [];
 
         const listNamaBulan = ['SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER', 'JANUARI'];
 
+        // FUNGSI UPDATE UI UNTUK SALDO TOTAL BERSIH
+        function updateUIKeuangan() {
+            const saldoBersih = totalPemasukanGlobal - totalPengeluaranGlobal;
+            document.getElementById('saldoTotalM').innerText = formatRupiah(saldoBersih);
+            document.getElementById('saldoMasukM').innerText = formatRupiah(totalPemasukanGlobal);
+            document.getElementById('saldoKeluarM').innerText = formatRupiah(totalPengeluaranGlobal);
+        }
+
+        function parseTanggalSheet(raw) {
+            if (!raw) return "-";
+            let str = String(raw);
+            if (str.includes("Date(")) {
+                let match = str.match(/Date\((\d+),\s*(\d+),\s*(\d+)/);
+                if (match) return `${match[3].padStart(2, '0')}/${(parseInt(match[2])+1).toString().padStart(2, '0')}/${match[1]}`;
+            }
+            let dObj = new Date(str);
+            if (!isNaN(dObj.getTime())) return `${String(dObj.getDate()).padStart(2, '0')}/${String(dObj.getMonth()+1).padStart(2, '0')}/${dObj.getFullYear()}`;
+            return str.substring(0,10);
+        }
+
+        // ================= FITUR ADMIN =================
         function loginAdmin() {
             const pin = prompt("Masukkan PIN Keamanan Bendahara:");
             if (pin === PIN_BENDAHARA) {
                 document.getElementById('adminSection').classList.remove('hide');
                 document.getElementById('btnLogin').classList.add('hide');
                 muatAntrean(); 
-            } else if (pin !== null) {
-                alert("❌ PIN Salah!");
-            }
+            } else if (pin !== null) alert("❌ PIN Salah!");
         }
         function logoutAdmin() {
             document.getElementById('adminSection').classList.add('hide');
@@ -306,20 +357,15 @@
         function muatAntrean() {
             const container = document.getElementById('listPendingAdmin');
             container.innerHTML = '<p class="text-xs text-slate-400 italic"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Memuat data antrean...</p>';
-            
-            fetch(endpointPending)
-            .then(res => res.text())
-            .then(text => {
+            fetch(endpointPending).then(res => res.text()).then(text => {
                 const data = JSON.parse(text.substring(47).slice(0, -2));
                 container.innerHTML = '';
                 let adaAntrean = false;
-                
                 if(data.table && data.table.rows) {
                     data.table.rows.forEach(row => {
                         if(!row.c || !row.c[1] || !row.c[1].v) return;
                         const nama = row.c[1].v.toString();
                         if(nama.toLowerCase() === 'nama') return; 
-
                         adaAntrean = true;
                         const nominal = row.c[2] ? Number(row.c[2].v) : 0;
                         const tipe = row.c[3] ? row.c[3].v : '-';
@@ -338,330 +384,181 @@
                     });
                 }
                 if(!adaAntrean) container.innerHTML = '<p class="text-xs text-slate-400 italic bg-slate-50 p-3 rounded-lg border border-slate-100">Belum ada antrean transfer baru.</p>';
-            })
-            .catch(() => {
-                container.innerHTML = '<p class="text-xs text-slate-400 italic bg-slate-50 p-3 rounded-lg border border-slate-100">Belum ada antrean transfer baru.</p>';
-            });
+            }).catch(() => container.innerHTML = '<p class="text-xs text-slate-400 italic">Antrean kosong.</p>');
         }
 
         function aksiValidasi(nama, nominal, actionType) {
             const isACC = (actionType === 'acc_admin');
-            const konfirm = confirm(`Apakah Anda yakin ingin ${isACC ? 'MENG-ACC' : 'MENOLAK'} transfer dari ${nama} sebesar ${formatRupiah(nominal)}?`);
-            if(!konfirm) return;
-            
+            if(!confirm(`Apakah Anda yakin ingin ${isACC ? 'MENG-ACC' : 'MENOLAK'} transfer dari ${nama} sejumlah ${formatRupiah(nominal)}?`)) return;
             document.body.style.cursor = 'wait';
-            const formBody = new URLSearchParams({ 'action': actionType, 'nama': nama, 'nominal': nominal });
-            
-            fetch(gasUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formBody })
-            .then(() => {
-                document.body.style.cursor = 'default';
-                alert(isACC ? `✅ Saldo ${nama} berhasil disetujui & masuk web!` : `🗑️ Antrean ${nama} berhasil dihapus.`);
-                window.location.reload();
-            });
+            fetch(gasUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ 'action': actionType, 'nama': nama, 'nominal': nominal }) })
+            .then(() => { alert(isACC ? `✅ Saldo ${nama} disetujui!` : `🗑️ Antrean ${nama} dihapus.`); window.location.reload(); });
         }
 
+        // SUBMIT FORM MANUAL MASUK
         document.getElementById('formUpdateManual').addEventListener('submit', function(e) {
             e.preventDefault();
             const namaACC = dapatkanNamaAktif('selectNamaAdmin', 'inputNamaManualAdmin');
             const nominalACC = document.getElementById('inputNominalAdmin').value;
-            if(!namaACC || !nominalACC) return alert("Isi form dengan lengkap!");
+            if(!namaACC || !nominalACC) return alert("Lengkapi data!");
+            const btn = document.getElementById('btnSubmitAdmin'); btn.innerHTML = 'Menyimpan...'; btn.disabled = true;
+            fetch(gasUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ 'action': 'manual_acc', 'nama': namaACC, 'nominal': nominalACC }) })
+            .then(() => { alert(`✅ Pemasukan Manual Berhasil!`); window.location.reload(); });
+        });
 
-            const btnSubmit = document.getElementById('btnSubmitAdmin');
-            btnSubmit.innerHTML = 'Menyimpan...'; btnSubmit.disabled = true;
-
-            const formBody = new URLSearchParams({ 'action': 'manual_acc', 'nama': namaACC, 'nominal': nominalACC });
-
-            fetch(gasUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formBody })
-            .then(() => {
-                alert(`✅ Manual ACC Berhasil!`);
-                window.location.reload();
-            });
+        // SUBMIT FORM CATAT PENGELUARAN (BARU)
+        document.getElementById('formPengeluaran').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const deskripsi = document.getElementById('inputDeskripsiPengeluaran').value;
+            const nominalK = document.getElementById('inputNominalPengeluaran').value;
+            if(!deskripsi || !nominalK) return alert("Lengkapi deskripsi & nominal!");
+            const btn = document.getElementById('btnSubmitPengeluaran'); 
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
+            fetch(gasUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ 'action': 'tambah_pengeluaran', 'deskripsi': deskripsi, 'nominal': nominalK }) })
+            .then(() => { alert(`✅ Pengeluaran "${deskripsi}" berhasil dicatat!`); window.location.reload(); })
+            .catch(() => { alert("Gagal koneksi."); btn.innerHTML = 'Simpan Keluar'; btn.disabled = false; });
         });
 
         function toggleInputManual(selectId, inputId) {
-            const select = document.getElementById(selectId);
-            const input = document.getElementById(inputId);
-            if (select.value === 'DONATUR_UMUM') { input.classList.remove('hide'); input.focus(); } 
-            else { input.classList.add('hide'); input.value = ''; }
+            const sel = document.getElementById(selectId); const inp = document.getElementById(inputId);
+            if(sel.value === 'DONATUR_UMUM') { inp.classList.remove('hide'); inp.focus(); } else { inp.classList.add('hide'); inp.value = ''; }
         }
+        function dapatkanNamaAktif(selId, inpId) { const s = document.getElementById(selId); return s.value === 'DONATUR_UMUM' ? document.getElementById(inpId).value.trim() : s.value; }
 
-        function dapatkanNamaAktif(selectId, inputId) {
-            const select = document.getElementById(selectId);
-            const input = document.getElementById(inputId);
-            return select.value === 'DONATUR_UMUM' ? input.value.trim() : select.value;
-        }
-
-        fetch(endpointDataUtama)
-            .then(res => res.text())
-            .then(text => {
-                const data = JSON.parse(text.substring(47).slice(0, -2));
-                let optionsHTML = '<option value="" disabled selected>Pilih Nama Anda / Donatur...</option>';
-                
-                const mutasiContainer = document.getElementById('tabelMutasi');
-                const recentContainer = document.getElementById('recentTransactions');
-                
-                mutasiContainer.innerHTML = '';
-                recentContainer.innerHTML = '';
-                
-                let daftarNamaUnik = [];
-                let validRows = [];
-
-                // Filter & kumpulkan baris data yang valid (memiliki angka nominal)
-                data.table.rows.forEach((row) => {
-                    if (!row.c || !row.c[1] || !row.c[1].v || row.c[1].v.toString().includes('TOTAL')) return;
+        // ================= FETCH DATA PENGELUARAN (BARU) =================
+        fetch(endpointPengeluaran).then(res => res.text()).then(text => {
+            const data = JSON.parse(text.substring(47).slice(0, -2));
+            const tabEl = document.getElementById('tabelPengeluaran'); tabEl.innerHTML = '';
+            if(data.table && data.table.rows && data.table.rows.length > 0) {
+                let hasData = false;
+                data.table.rows.forEach(row => {
+                    const tglRaw = row.c[0] ? (row.c[0].f || row.c[0].v) : null;
+                    if(!tglRaw) return;
+                    hasData = true;
+                    const desk = row.c[1] ? row.c[1].v : '-';
+                    const nom = row.c[2] ? Number(row.c[2].v) || 0 : 0;
+                    totalPengeluaranGlobal += nom;
                     
-                    const nama = row.c[1].v.toString().toUpperCase();
-                    const bayar = row.c[2] ? Number(row.c[2].v) || 0 : 0;
-                    
-                    if (bayar > 0) validRows.push({ nama, bayar }); // Simpan yang nominalnya > 0 untuk fitur "Baru Masuk"
-                    
-                    const isDonatur = nama.includes('DONATUR') || nama.includes('UMUM') || nama.includes('HAMBA');
-
-                    if(!isDonatur) {
-                        dataGlobal.push({ nama, bayar });
-                        if(!daftarNamaUnik.includes(nama)) daftarNamaUnik.push(nama);
-                    }
-                    totalSaldoGlobal += bayar;
-
-                    let statusHTML = '';
-                    if (isDonatur) {
-                        statusHTML = '<span class="inline-flex items-center bg-blue-100 text-blue-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-heart mr-1"></i>DONATUR UMUM</span>';
-                    } else {
-                        statusHTML = bayar >= (5 * hargaPerBulan) 
-                            ? '<span class="inline-flex items-center bg-emerald-100 text-emerald-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-check mr-1"></i>LUNAS (5 BLN)</span>' 
-                            : (bayar > 0 
-                                ? '<span class="inline-flex items-center bg-amber-100 text-amber-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-clock mr-1"></i>CICIL</span>' 
-                                : '<span class="inline-flex items-center bg-rose-100 text-rose-600 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-xmark mr-1"></i>BELUM</span>');
-                    }
-
-                    mutasiContainer.innerHTML += `
+                    tabEl.innerHTML += `
                         <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="p-4 font-semibold text-slate-700 whitespace-nowrap">${nama}</td>
-                            <td class="p-4 text-emerald-600 font-bold whitespace-nowrap">${formatRupiah(bayar)}</td>
-                            <td class="p-4 text-center">${statusHTML}</td>
+                            <td class="p-4 text-slate-500 whitespace-nowrap text-xs">${parseTanggalSheet(tglRaw)}</td>
+                            <td class="p-4 font-semibold text-slate-700">${desk}</td>
+                            <td class="p-4 text-rose-600 font-bold text-right whitespace-nowrap">${formatRupiah(nom)}</td>
                         </tr>`;
                 });
+                if(!hasData) tabEl.innerHTML = '<tr><td colspan="3" class="text-center p-8 text-slate-400">Belum ada pengeluaran dicatat.</td></tr>';
+            } else { tabEl.innerHTML = '<tr><td colspan="3" class="text-center p-8 text-slate-400">Belum ada pengeluaran dicatat.</td></tr>'; }
+            updateUIKeuangan();
+        }).catch(() => { document.getElementById('tabelPengeluaran').innerHTML = '<tr><td colspan="3" class="text-center p-8 text-slate-400">Sheet Pengeluaran belum dibuat.</td></tr>'; });
 
-                /* 
-                 * FITUR TRANSAKSI TERKINI (Slider Live Update)
-                 * Mengambil 6 data terbawah di spreadsheet (diasumsikan sebagai data terbaru yang baru diinput admin)
-                 */
-                const recentData = validRows.slice(-6).reverse(); // Ambil 6 terakhir, balikkan urutan (paling baru di depan)
+        // ================= FETCH DATA UTAMA (PEMASUKAN) =================
+        fetch(endpointDataUtama).then(res => res.text()).then(text => {
+            const data = JSON.parse(text.substring(47).slice(0, -2));
+            let optionsHTML = '<option value="" disabled selected>Pilih Nama Anda / Donatur...</option>';
+            const mutasiContainer = document.getElementById('tabelMutasi'); const recentContainer = document.getElementById('recentTransactions');
+            mutasiContainer.innerHTML = ''; recentContainer.innerHTML = '';
+            let daftarNamaUnik = []; let validRows = [];
+
+            data.table.rows.forEach((row) => {
+                if (!row.c || !row.c[1] || !row.c[1].v || row.c[1].v.toString().includes('TOTAL')) return;
+                const nama = row.c[1].v.toString().toUpperCase();
+                const bayar = row.c[2] ? Number(row.c[2].v) || 0 : 0;
+                if (bayar > 0) validRows.push({ nama, bayar }); 
                 
-                if (recentData.length > 0) {
-                    recentData.forEach((item) => {
-                        const isDonatur = item.nama.includes('DONATUR') || item.nama.includes('UMUM') || item.nama.includes('HAMBA');
-                        const icon = isDonatur ? '<i class="fa-solid fa-heart text-rose-500"></i>' : '<i class="fa-solid fa-check-circle text-emerald-500"></i>';
-                        const colorBg = isDonatur ? 'bg-rose-50' : 'bg-emerald-50';
-                        const label = isDonatur ? 'Donatur Umum' : 'Iuran Anggota';
-                        
-                        recentContainer.innerHTML += `
-                            <div class="snap-start shrink-0 bg-white border border-slate-100 rounded-2xl p-3 shadow-sm flex items-center gap-3 min-w-[220px]">
-                                <div class="w-10 h-10 rounded-full ${colorBg} flex items-center justify-center text-lg shrink-0">
-                                    ${icon}
-                                </div>
-                                <div class="overflow-hidden">
-                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">${label}</p>
-                                    <p class="text-sm font-extrabold text-slate-700 truncate w-32" title="${item.nama}">${item.nama}</p>
-                                    <p class="text-xs font-bold text-primary mt-0.5">${formatRupiah(item.bayar)}</p>
-                                </div>
-                            </div>
-                        `;
-                    });
-                } else {
-                    recentContainer.innerHTML = '<p class="text-xs text-slate-400 italic">Belum ada transaksi.</p>';
-                }
+                const isDonatur = nama.includes('DONATUR') || nama.includes('UMUM') || nama.includes('HAMBA');
+                if(!isDonatur) { dataGlobal.push({ nama, bayar }); if(!daftarNamaUnik.includes(nama)) daftarNamaUnik.push(nama); }
+                totalPemasukanGlobal += bayar;
 
-                // Pengisian Dropdown Option Pilihan Nama
-                daftarNamaUnik.forEach(n => optionsHTML += `<option value="${n}">${n}</option>`);
-                optionsHTML += '<option value="DONATUR_UMUM" class="font-bold text-primary">➕ + Donatur Umum (Sumbangan Sukarela)...</option>';
+                let statusHTML = isDonatur ? '<span class="inline-flex items-center bg-blue-100 text-blue-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-heart mr-1"></i>DONATUR UMUM</span>' 
+                    : (bayar >= (5 * hargaPerBulan) ? '<span class="inline-flex items-center bg-emerald-100 text-emerald-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-check mr-1"></i>LUNAS</span>' 
+                    : (bayar > 0 ? '<span class="inline-flex items-center bg-amber-100 text-amber-700 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-clock mr-1"></i>CICIL</span>' 
+                    : '<span class="inline-flex items-center bg-rose-100 text-rose-600 py-1 px-3 rounded-full text-[10px] font-bold"><i class="fa-solid fa-xmark mr-1"></i>BELUM</span>'));
 
-                document.getElementById('selectNama').innerHTML = optionsHTML;
-                document.getElementById('selectNamaAdmin').innerHTML = optionsHTML;
-                document.getElementById('saldoTotalM').innerText = formatRupiah(totalSaldoGlobal);
-                document.getElementById('saldoMasukM').innerText = formatRupiah(totalSaldoGlobal);
+                mutasiContainer.innerHTML += `<tr class="hover:bg-slate-50 transition-colors"><td class="p-4 font-semibold text-slate-700 whitespace-nowrap">${nama}</td><td class="p-4 text-emerald-600 font-bold whitespace-nowrap">${formatRupiah(bayar)}</td><td class="p-4 text-center">${statusHTML}</td></tr>`;
             });
 
-        function lanjutkanKeBulan() {
-            const select = document.getElementById('selectNama');
-            const namaTerpilih = dapatkanNamaAktif('selectNama', 'inputNamaManualAnggota');
-            
-            if(!namaTerpilih) return alert("Pilih atau ketik nama Anda terlebih dahulu.");
-            
-            isDonaturUmum = (select.value === 'DONATUR_UMUM');
-            penggunaAktif = dataGlobal.find(d => d.nama === namaTerpilih);
-            if(!penggunaAktif) penggunaAktif = { nama: namaTerpilih, bayar: 0 };
+            // FITUR RECENT TRANSACTIONS (6 Data Pemasukan Terbaru)
+            const recentData = validRows.slice(-6).reverse();
+            if (recentData.length > 0) {
+                recentData.forEach((item) => {
+                    const isDntr = item.nama.includes('DONATUR') || item.nama.includes('UMUM') || item.nama.includes('HAMBA');
+                    recentContainer.innerHTML += `
+                        <div class="snap-start shrink-0 bg-white border border-slate-100 rounded-2xl p-3 shadow-sm flex items-center gap-3 min-w-[220px]">
+                            <div class="w-10 h-10 rounded-full ${isDntr ? 'bg-rose-50 text-rose-500' : 'bg-emerald-50 text-emerald-500'} flex items-center justify-center text-lg shrink-0">
+                                ${isDntr ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-solid fa-check-circle"></i>'}
+                            </div>
+                            <div class="overflow-hidden">
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">${isDntr ? 'Donatur Umum' : 'Iuran Anggota'}</p>
+                                <p class="text-sm font-extrabold text-slate-700 truncate w-32" title="${item.nama}">${item.nama}</p>
+                                <p class="text-xs font-bold text-primary mt-0.5">${formatRupiah(item.bayar)}</p>
+                            </div>
+                        </div>`;
+                });
+            } else recentContainer.innerHTML = '<p class="text-xs text-slate-400 italic">Belum ada donasi.</p>';
 
-            document.getElementById('step1').classList.add('hide');
-            document.getElementById('step2').classList.remove('hide');
-            document.getElementById('userInitial').innerText = penggunaAktif.nama.charAt(0);
-            document.getElementById('userNameDisplay').innerText = penggunaAktif.nama;
+            daftarNamaUnik.forEach(n => optionsHTML += `<option value="${n}">${n}</option>`);
+            optionsHTML += '<option value="DONATUR_UMUM" class="font-bold text-primary">➕ + Donatur Umum (Sumbangan Sukarela)...</option>';
+            document.getElementById('selectNama').innerHTML = optionsHTML; document.getElementById('selectNamaAdmin').innerHTML = optionsHTML;
+            updateUIKeuangan();
+        });
+
+        // ================= FLOW TRANSAKSI =================
+        function lanjutkanKeBulan() {
+            const select = document.getElementById('selectNama'); const namaTerpilih = dapatkanNamaAktif('selectNama', 'inputNamaManualAnggota');
+            if(!namaTerpilih) return alert("Pilih / Ketik nama terlebih dahulu.");
+            isDonaturUmum = (select.value === 'DONATUR_UMUM');
+            penggunaAktif = dataGlobal.find(d => d.nama === namaTerpilih) || { nama: namaTerpilih, bayar: 0 };
+            document.getElementById('step1').classList.add('hide'); document.getElementById('step2').classList.remove('hide');
+            document.getElementById('userInitial').innerText = penggunaAktif.nama.charAt(0); document.getElementById('userNameDisplay').innerText = penggunaAktif.nama;
             document.getElementById('userRoleDisplay').innerText = isDonaturUmum ? "Donatur Umum" : "Anggota";
 
             if(isDonaturUmum) {
-                document.getElementById('judulLangkah2').innerText = "Donasi Sukarela";
-                document.getElementById('subjudulLangkah2').innerText = "Masukkan nominal seikhlasnya untuk acara";
-                document.getElementById('periodeLabel').classList.add('hide');
-                document.getElementById('bulanInputContainer').classList.add('hide');
-                document.getElementById('donasiInputContainer').classList.remove('hide');
-                document.getElementById('boxBayar').classList.add('hide');
+                document.getElementById('judulLangkah2').innerText = "Donasi Sukarela"; document.getElementById('subjudulLangkah2').innerText = "Nominal seikhlasnya";
+                document.getElementById('periodeLabel').classList.add('hide'); document.getElementById('bulanInputContainer').classList.add('hide');
+                document.getElementById('donasiInputContainer').classList.remove('hide'); document.getElementById('boxBayar').classList.add('hide');
             } else {
-                document.getElementById('judulLangkah2').innerText = "Tagihan Iuran Wajib";
-                document.getElementById('subjudulLangkah2').innerText = "Pilih bulan iuran (Sep '26 s.d. Jan '27)";
-                document.getElementById('periodeLabel').classList.remove('hide');
-                document.getElementById('bulanInputContainer').classList.remove('hide');
-                document.getElementById('donasiInputContainer').classList.add('hide');
-                renderGridBulan();
+                document.getElementById('judulLangkah2').innerText = "Tagihan Iuran Wajib"; document.getElementById('subjudulLangkah2').innerText = "Pilih bulan iuran (Sep '26 s.d. Jan '27)";
+                document.getElementById('periodeLabel').classList.remove('hide'); document.getElementById('bulanInputContainer').classList.remove('hide');
+                document.getElementById('donasiInputContainer').classList.add('hide'); renderGridBulan();
             }
         }
 
-        function kembaliKeStep1() {
-            document.getElementById('step2').classList.add('hide');
-            document.getElementById('step1').classList.remove('hide');
-            bulanDipilih = [];
-            document.getElementById('boxBayar').classList.add('hide');
-            document.getElementById('inputNominalDonasi').value = '';
-        }
+        function kembaliKeStep1() { document.getElementById('step2').classList.add('hide'); document.getElementById('step1').classList.remove('hide'); bulanDipilih = []; document.getElementById('boxBayar').classList.add('hide'); document.getElementById('inputNominalDonasi').value = ''; }
 
         function renderGridBulan() {
-            const grid = document.getElementById('gridBulan');
-            grid.innerHTML = '';
-            const jumlahBulanLunas = Math.floor(penggunaAktif.bayar / hargaPerBulan);
-
+            const grid = document.getElementById('gridBulan'); grid.innerHTML = ''; const jumlahBulanLunas = Math.floor(penggunaAktif.bayar / hargaPerBulan);
             listNamaBulan.forEach((bulan, index) => {
-                const isLunas = index < jumlahBulanLunas;
-                const isDipilih = bulanDipilih.includes(bulan);
+                const isLunas = index < jumlahBulanLunas; const isDipilih = bulanDipilih.includes(bulan);
                 let btnClass = isLunas ? 'bulan-lunas' : (isDipilih ? 'bulan-pilih' : 'bulan-belum');
                 let badgeText = isLunas ? 'LUNAS' : (isDipilih ? 'PILIH' : 'BELUM');
-                let onClickFn = isLunas ? '' : `onclick="toggleBulan('${bulan}')"`;
-
-                grid.innerHTML += `
-                <div ${onClickFn} class="rounded-2xl p-4 flex flex-col items-center justify-center gap-1 h-24 ${btnClass}">
-                    <span class="title font-extrabold text-sm">${bulan}</span>
-                    <span class="badge text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">${badgeText}</span>
-                </div>`;
+                grid.innerHTML += `<div ${isLunas ? '' : `onclick="toggleBulan('${bulan}')"`} class="rounded-2xl p-4 flex flex-col items-center justify-center gap-1 h-24 ${btnClass}"><span class="title font-extrabold text-sm">${bulan}</span><span class="badge text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">${badgeText}</span></div>`;
             });
             updateBoxBayar();
         }
 
-        function toggleBulan(bulan) {
-            const idx = bulanDipilih.indexOf(bulan);
-            if(idx > -1) bulanDipilih.splice(idx, 1);
-            else bulanDipilih.push(bulan);
-            bulanDipilih.sort((a,b) => listNamaBulan.indexOf(a) - listNamaBulan.indexOf(b));
-            renderGridBulan();
-        }
-
-        function updateBoxBayar() {
-            const box = document.getElementById('boxBayar');
-            const teks = document.getElementById('totalBayarText');
-            if(bulanDipilih.length > 0) {
-                box.classList.remove('hide');
-                teks.innerText = formatRupiah(bulanDipilih.length * hargaPerBulan);
-            } else box.classList.add('hide');
-        }
-
-        function updateTotalDonasi() {
-            const nominal = parseInt(document.getElementById('inputNominalDonasi').value) || 0;
-            const box = document.getElementById('boxBayar');
-            document.getElementById('totalBayarText').innerText = formatRupiah(nominal);
-            if(nominal > 0) box.classList.remove('hide');
-            else box.classList.add('hide');
-        }
+        function toggleBulan(bulan) { const idx = bulanDipilih.indexOf(bulan); if(idx > -1) bulanDipilih.splice(idx, 1); else bulanDipilih.push(bulan); bulanDipilih.sort((a,b) => listNamaBulan.indexOf(a) - listNamaBulan.indexOf(b)); renderGridBulan(); }
+        
+        function updateBoxBayar() { const box = document.getElementById('boxBayar'); if(bulanDipilih.length > 0) { box.classList.remove('hide'); document.getElementById('totalBayarText').innerText = formatRupiah(bulanDipilih.length * hargaPerBulan); } else box.classList.add('hide'); }
+        function updateTotalDonasi() { const nom = parseInt(document.getElementById('inputNominalDonasi').value) || 0; const box = document.getElementById('boxBayar'); document.getElementById('totalBayarText').innerText = formatRupiah(nom); if(nom > 0) box.classList.remove('hide'); else box.classList.add('hide'); }
 
         function bukaModalQRIS() {
             let total = isDonaturUmum ? (parseInt(document.getElementById('inputNominalDonasi').value) || 0) : (bulanDipilih.length * hargaPerBulan);
-            if (total <= 0) return alert("Silakan tentukan nominal terlebih dahulu.");
+            if (total <= 0) return alert("Tentukan nominal terlebih dahulu.");
             document.getElementById('modalTotal').innerText = formatRupiah(total);
-            const modal = document.getElementById('modalQRIS');
-            modal.classList.remove('hide');
-            setTimeout(() => { modal.classList.remove('opacity-0'); document.getElementById('modalContent').classList.remove('scale-95'); }, 10);
+            const m = document.getElementById('modalQRIS'); m.classList.remove('hide'); setTimeout(() => { m.classList.remove('opacity-0'); document.getElementById('modalContent').classList.remove('scale-95'); }, 10);
         }
-
-        function tutupModalQRIS() {
-            const modal = document.getElementById('modalQRIS');
-            modal.classList.add('opacity-0'); document.getElementById('modalContent').classList.add('scale-95');
-            setTimeout(() => { modal.classList.add('hide'); }, 300);
-        }
+        function tutupModalQRIS() { const m = document.getElementById('modalQRIS'); m.classList.add('opacity-0'); document.getElementById('modalContent').classList.add('scale-95'); setTimeout(() => m.classList.add('hide'), 300); }
 
         function konfirmasiWADanAntre() {
             let total = isDonaturUmum ? (parseInt(document.getElementById('inputNominalDonasi').value) || 0) : (bulanDipilih.length * hargaPerBulan);
-            let tipeTagihan = isDonaturUmum ? "Donasi Umum" : "Iuran Acara";
-            let rincian = isDonaturUmum ? `- Nominal: *${formatRupiah(total)}*` : `- Bulan: ${bulanDipilih.join(', ')}\n- Nominal: *${formatRupiah(total)}*`;
+            let t = isDonaturUmum ? "Donasi Umum" : "Iuran Acara"; let r = isDonaturUmum ? `- Nominal: *${formatRupiah(total)}*` : `- Bulan: ${bulanDipilih.join(', ')}\n- Nominal: *${formatRupiah(total)}*`;
+            const btn = document.getElementById('btnKonfirmasiWA'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengirim Data...'; btn.disabled = true;
 
-            const btn = document.getElementById('btnKonfirmasiWA');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xl mr-2"></i> Mengirim Data...';
-            btn.disabled = true;
-
-            const formBody = new URLSearchParams({ 
-                'action': 'tambah_pending',
-                'nama': penggunaAktif.nama, 
-                'nominal': total,
-                'tipe': tipeTagihan
-            });
-
-            fetch(gasUrl, {
-                method: 'POST', mode: 'no-cors',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: formBody
-            }).then(() => {
-                const teksWA = `Halo Bendahara, saya *${penggunaAktif.nama}* ingin konfirmasi pembayaran ${tipeTagihan} (Acara Majelis Ta'lim An-Nawiyah & Ikatan Santri Al-Hasanah).%0A%0A*Rincian Pembayaran:*%0A${encodeURIComponent(rincian)}%0A%0ABerikut saya lampirkan bukti transfer QRIS. Mohon divalidasi agar tercatat di web. Terima kasih.`;
-                window.open(`https://wa.me/${noWABendahara}?text=${teksWA}`, '_blank');
-                
-                alert("Terima kasih! Data pembayaran Anda telah masuk antrean validasi bendahara.");
-                window.location.reload();
-            }).catch(() => {
-                alert('Terdapat gangguan koneksi, silakan coba lagi.');
-                btn.innerHTML = originalHTML; btn.disabled = false;
-            });
+            fetch(gasUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ 'action': 'tambah_pending', 'nama': penggunaAktif.nama, 'nominal': total, 'tipe': t }) }).then(() => {
+                window.open(`https://wa.me/${noWABendahara}?text=${encodeURIComponent(`Halo Bendahara, saya *${penggunaAktif.nama}* ingin konfirmasi pembayaran ${t}.%0A%0A*Rincian:*%0A${r}%0A%0ATerlampir bukti transfer. Terima kasih.`)}`, '_blank');
+                alert("Data masuk antrean admin!"); window.location.reload();
+            }).catch(() => { alert('Koneksi terganggu.'); btn.innerHTML = '<i class="fa-brands fa-whatsapp text-xl"></i> Konfirmasi via WhatsApp'; btn.disabled = false; });
         }
-    const endpointPengeluaran = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Pengeluaran`;
-        let totalPengeluaranGlobal = 0;
-
-        // Fetch Data Pengeluaran untuk Transparansi
-        fetch(endpointPengeluaran)
-            .then(res => res.text())
-            .then(text => {
-                const data = JSON.parse(text.substring(47).slice(0, -2));
-                if(data.table && data.table.rows) {
-                    data.table.rows.forEach(row => {
-                        // Asumsi nominal keluar ada di kolom C (index 2)
-                        const keluar = row.c[2] ? Number(row.c[2].v) || 0 : 0;
-                        totalPengeluaranGlobal += keluar;
-                    });
-                }
-                
-                document.getElementById('saldoKeluarM').innerText = formatRupiah(totalPengeluaranGlobal);
-                
-                // Update Saldo Total (Masuk - Keluar)
-                const sisaSaldo = totalSaldoGlobal - totalPengeluaranGlobal;
-                document.getElementById('saldoTotalM').innerText = formatRupiah(sisaSaldo);
-            }).catch(e => console.log("Belum ada data pengeluaran"));
-
-        // Proses Submit Form Pengeluaran
-        document.getElementById('formPengeluaran').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const deskripsi = document.getElementById('inputDeskripsiPengeluaran').value;
-            const nominal = document.getElementById('inputNominalPengeluaran').value;
-            if(!deskripsi || !nominal) return alert("Isi form dengan lengkap!");
-
-            const btn = document.getElementById('btnSubmitPengeluaran');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; 
-            btn.disabled = true;
-
-            const formBody = new URLSearchParams({ 'action': 'tambah_pengeluaran', 'deskripsi': deskripsi, 'nominal': nominal });
-
-            fetch(gasUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formBody })
-            .then(() => {
-                alert(`✅ Pengeluaran "${deskripsi}" berhasil dicatat!`);
-                window.location.reload();
-            }).catch(() => {
-                alert("Gagal menyimpan pengeluaran. Cek koneksi Anda.");
-                btn.innerHTML = originalHTML; btn.disabled = false;
-            });
-        });
     </script>
 </body>
 </html>
