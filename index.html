@@ -52,6 +52,24 @@
         
         <!-- FITUR ADMIN -->
         <div id="adminSection" class="hide bg-white rounded-[2rem] p-6 md:p-8 mb-8 border-t-4 border-primary relative overflow-hidden shadow-2xl">
+            <!-- FORM PENGELUARAN -->
+            <div class="mt-8 border-t border-slate-100 pt-6">
+                <h3 class="text-sm font-bold text-slate-700 mb-3 pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-right-from-bracket text-rose-500"></i> Catat Pengeluaran Dana
+                </h3>
+                <form id="formPengeluaran" class="space-y-4">
+                    <input type="text" id="inputDeskripsiPengeluaran" placeholder="Deskripsi (contoh: Beli Tenda, Konsumsi...)" class="w-full px-5 py-3 border-2 border-slate-100 rounded-xl text-sm font-bold bg-slate-50 focus:border-rose-500 focus:outline-none transition-all" required>
+                    <div class="flex gap-2">
+                        <div class="relative flex-1">
+                            <span class="absolute left-4 top-3.5 text-slate-400 font-bold text-sm">Rp</span>
+                            <input type="number" id="inputNominalPengeluaran" placeholder="Nominal Keluar" class="w-full pl-10 pr-4 py-3 border-2 border-slate-100 rounded-xl focus:outline-none focus:border-rose-500 text-sm font-bold bg-slate-50 transition-all" required>
+                        </div>
+                        <button type="submit" id="btnSubmitPengeluaran" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md">
+                            Simpan Pengeluaran
+                        </button>
+                    </div>
+                </form>
+            </div>
             <div class="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-4 py-1.5 rounded-bl-2xl uppercase tracking-wider">Mode Bendahara</div>
             <div class="flex justify-between items-center mb-6 mt-2">
                 <h2 class="text-xl font-bold text-slate-800 flex items-center"><i class="fa-solid fa-user-check text-primary mr-3 text-2xl"></i>Validasi Transfer</h2>
@@ -186,7 +204,7 @@
                     </div>
                     <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm flex flex-col justify-center text-center">
                         <p class="text-xs font-bold text-rose-500 uppercase tracking-wider mb-1"><i class="fa-solid fa-arrow-trend-down"></i> Pengeluaran</p>
-                        <h3 class="text-xl font-extrabold text-slate-800">Rp 0</h3>
+                        <h3 class="text-xl font-extrabold text-rose-600" id="saldoKeluarM">Rp 0</h3>
                     </div>
                 </div>
             </div>
@@ -598,6 +616,52 @@
                 btn.innerHTML = originalHTML; btn.disabled = false;
             });
         }
+    const endpointPengeluaran = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Pengeluaran`;
+        let totalPengeluaranGlobal = 0;
+
+        // Fetch Data Pengeluaran untuk Transparansi
+        fetch(endpointPengeluaran)
+            .then(res => res.text())
+            .then(text => {
+                const data = JSON.parse(text.substring(47).slice(0, -2));
+                if(data.table && data.table.rows) {
+                    data.table.rows.forEach(row => {
+                        // Asumsi nominal keluar ada di kolom C (index 2)
+                        const keluar = row.c[2] ? Number(row.c[2].v) || 0 : 0;
+                        totalPengeluaranGlobal += keluar;
+                    });
+                }
+                
+                document.getElementById('saldoKeluarM').innerText = formatRupiah(totalPengeluaranGlobal);
+                
+                // Update Saldo Total (Masuk - Keluar)
+                const sisaSaldo = totalSaldoGlobal - totalPengeluaranGlobal;
+                document.getElementById('saldoTotalM').innerText = formatRupiah(sisaSaldo);
+            }).catch(e => console.log("Belum ada data pengeluaran"));
+
+        // Proses Submit Form Pengeluaran
+        document.getElementById('formPengeluaran').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const deskripsi = document.getElementById('inputDeskripsiPengeluaran').value;
+            const nominal = document.getElementById('inputNominalPengeluaran').value;
+            if(!deskripsi || !nominal) return alert("Isi form dengan lengkap!");
+
+            const btn = document.getElementById('btnSubmitPengeluaran');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; 
+            btn.disabled = true;
+
+            const formBody = new URLSearchParams({ 'action': 'tambah_pengeluaran', 'deskripsi': deskripsi, 'nominal': nominal });
+
+            fetch(gasUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formBody })
+            .then(() => {
+                alert(`✅ Pengeluaran "${deskripsi}" berhasil dicatat!`);
+                window.location.reload();
+            }).catch(() => {
+                alert("Gagal menyimpan pengeluaran. Cek koneksi Anda.");
+                btn.innerHTML = originalHTML; btn.disabled = false;
+            });
+        });
     </script>
 </body>
 </html>
