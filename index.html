@@ -296,7 +296,7 @@
         </div>
     </div>
 
-    <!-- MODAL PIN ADMIN (BARU) -->
+    <!-- MODAL PIN ADMIN -->
     <div id="modalPIN" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hide flex items-center justify-center p-4 opacity-0 transition-opacity">
         <div class="bg-white rounded-[2rem] w-full max-w-sm overflow-hidden shadow-2xl transform scale-95 transition-transform" id="modalPINContent">
             <div class="bg-slate-50 p-4 border-b border-slate-100 flex justify-between items-center">
@@ -355,7 +355,7 @@
             return str.substring(0,10);
         }
 
-        // ================= FITUR ADMIN & SISTEM LOGIN (BARU) =================
+        // ================= FITUR ADMIN & SISTEM LOGIN =================
         function loginAdmin() {
             const m = document.getElementById('modalPIN');
             m.classList.remove('hide');
@@ -379,7 +379,7 @@
         function verifikasiPIN() {
             const pin = document.getElementById('inputPIN').value;
             if (pin === PIN_BENDAHARA) {
-                sessionStorage.setItem('admin_logged_in', 'true'); // Simpan sesi login
+                sessionStorage.setItem('admin_logged_in', 'true');
                 tutupModalPIN();
                 tampilkanAdmin();
             } else {
@@ -396,12 +396,11 @@
         }
 
         function logoutAdmin() {
-            sessionStorage.removeItem('admin_logged_in'); // Hapus sesi saat Tutup
+            sessionStorage.removeItem('admin_logged_in'); 
             document.getElementById('adminSection').classList.add('hide');
             document.getElementById('btnLogin').classList.remove('hide');
         }
 
-        // Mengecek apakah sebelumnya admin sudah login (Saat halaman direload)
         document.addEventListener('DOMContentLoaded', () => {
             if (sessionStorage.getItem('admin_logged_in') === 'true') {
                 tampilkanAdmin();
@@ -449,6 +448,21 @@
             .then(() => { alert(isACC ? `✅ Saldo ${nama} disetujui!` : `🗑️ Antrean ${nama} dihapus.`); window.location.reload(); });
         }
 
+        // ================= FUNGSI PERBAIKAN: FORMAT NAMA DONATUR =================
+        function dapatkanNamaAktif(selId, inpId) { 
+            const s = document.getElementById(selId); 
+            let val = s.value === 'DONATUR_UMUM' ? document.getElementById(inpId).value.trim() : s.value; 
+            
+            // Jika memilih Donatur Umum, otomatis tambahkan teks "(DONATUR)" agar tidak tercampur jadi Anggota
+            if (s.value === 'DONATUR_UMUM' && val !== '') {
+                const cek = val.toUpperCase();
+                if (!cek.includes('DONATUR') && !cek.includes('UMUM') && !cek.includes('HAMBA')) {
+                    val += ' (DONATUR)';
+                }
+            }
+            return val; 
+        }
+
         // SUBMIT FORM MANUAL MASUK
         document.getElementById('formUpdateManual').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -477,7 +491,6 @@
             const sel = document.getElementById(selectId); const inp = document.getElementById(inputId);
             if(sel.value === 'DONATUR_UMUM') { inp.classList.remove('hide'); inp.focus(); } else { inp.classList.add('hide'); inp.value = ''; }
         }
-        function dapatkanNamaAktif(selId, inpId) { const s = document.getElementById(selId); return s.value === 'DONATUR_UMUM' ? document.getElementById(inpId).value.trim() : s.value; }
 
         // ================= FETCH DATA PENGELUARAN =================
         fetch(endpointPengeluaran).then(res => res.text()).then(text => {
@@ -531,7 +544,7 @@
                 mutasiContainer.innerHTML += `<tr class="hover:bg-slate-50 transition-colors"><td class="p-4 font-semibold text-slate-700 whitespace-nowrap">${nama}</td><td class="p-4 text-emerald-600 font-bold whitespace-nowrap">${formatRupiah(bayar)}</td><td class="p-4 text-center">${statusHTML}</td></tr>`;
             });
 
-            // FITUR RECENT TRANSACTIONS (6 Data Pemasukan Terbaru)
+            // FITUR RECENT TRANSACTIONS
             const recentData = validRows.slice(-6).reverse();
             if (recentData.length > 0) {
                 recentData.forEach((item) => {
@@ -556,12 +569,19 @@
             updateUIKeuangan();
         });
 
-        // ================= FLOW TRANSAKSI =================
+        // ================= FLOW TRANSAKSI (PERBAIKAN) =================
         function lanjutkanKeBulan() {
-            const select = document.getElementById('selectNama'); const namaTerpilih = dapatkanNamaAktif('selectNama', 'inputNamaManualAnggota');
+            const select = document.getElementById('selectNama'); 
+            const namaTerpilih = dapatkanNamaAktif('selectNama', 'inputNamaManualAnggota');
             if(!namaTerpilih) return alert("Pilih / Ketik nama terlebih dahulu.");
-            isDonaturUmum = (select.value === 'DONATUR_UMUM');
-            penggunaAktif = dataGlobal.find(d => d.nama === namaTerpilih) || { nama: namaTerpilih, bayar: 0 };
+            
+            const namaUp = namaTerpilih.toUpperCase();
+            
+            // Logika baru: Cek apakah opsi dropdown adalah donatur, ATAU namanya mengandung unsur donatur
+            isDonaturUmum = (select.value === 'DONATUR_UMUM' || namaUp.includes('DONATUR') || namaUp.includes('UMUM') || namaUp.includes('HAMBA'));
+            
+            penggunaAktif = dataGlobal.find(d => d.nama === namaUp) || { nama: namaTerpilih, bayar: 0 };
+            
             document.getElementById('step1').classList.add('hide'); document.getElementById('step2').classList.remove('hide');
             document.getElementById('userInitial').innerText = penggunaAktif.nama.charAt(0); document.getElementById('userNameDisplay').innerText = penggunaAktif.nama;
             document.getElementById('userRoleDisplay').innerText = isDonaturUmum ? "Donatur Umum" : "Anggota";
@@ -615,10 +635,8 @@
             const pesanWA = `Halo Bendahara, saya *${penggunaAktif.nama}* ingin konfirmasi pembayaran ${t}.%0A%0A*Rincian:*%0A${r}%0A%0ATerlampir bukti transfer. Terima kasih.`;
             const linkWA = `https://wa.me/${noWABendahara}?text=${pesanWA}`;
             
-            // 1. Langsung eksekusi pemanggilan WhatsApp sebelum delay server Google
             window.open(linkWA, '_blank');
 
-            // 2. Barulah mengirim data antrean ke Google Sheets
             fetch(gasUrl, { 
                 method: 'POST', 
                 mode: 'no-cors', 
