@@ -4,12 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kas & Donasi - Majelis Ta'lim An-Nawiyah & Ikatan Santri Al-Hasanah</title>
+
+    <!-- KODE KHUSUS AGAR MUNCUL GAMBAR & DESKRIPSI DI WHATSAPP -->
+    <meta name="description" content="Aplikasi Kas & Donasi Majelis Ta'lim An-Nawiyah & Ikatan Santri Al-Hasanah">
+    <meta property="og:title" content="Kas & Donasi - MT An-Nawiyah & Al-ISAL">
+    <meta property="og:description" content="Mari dukung dan sukseskan acara Majelis Ta'lim An-Nawiyah & Ikatan Santri Al-Hasanah pada 2 Januari 2027.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kas-maulid-isal.vercel.app/">
+    <meta property="og:image" content="https://kas-maulid-isal.vercel.app/logo.png">
+    <meta property="og:image:width" content="300">
+    <meta property="og:image:height" content="300">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = { theme: { extend: { fontFamily: { sans: ['Poppins', 'sans-serif'] }, colors: { primary: '#059669', primaryHover: '#047857' } } } }
     </script>
+    <style>
+        body { background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%); min-height: 100vh; }
+        .hide { display: none !important; }
+        .bulan-lunas { background-color: #ecfdf5; border: 1px solid #a7f3d0; pointer-events: none; }
+        .bulan-lunas .badge { background-color: #a7f3d0; color: #047857; }
+        .bulan-lunas .title { color: #047857; }
+        .bulan-belum { background-color: white; border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.2s; }
+        .bulan-belum:hover { border-color: #cbd5e1; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .bulan-belum .badge { background-color: #f1f5f9; color: #94a3b8; }
+        .bulan-belum .title { color: #64748b; }
+        .bulan-pilih { background-color: #fffbeb; border: 1px solid #fef3c7; cursor: pointer; }
+        .bulan-pilih .badge { background-color: #fef3c7; color: #d97706; }
+        .bulan-pilih .title { color: #d97706; }
+        
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes pulse-ring { 0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        .live-indicator { animation: pulse-ring 2s infinite; }
+    </style>
+</head>
     <style>
         body { background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%); min-height: 100vh; }
         .hide { display: none !important; }
